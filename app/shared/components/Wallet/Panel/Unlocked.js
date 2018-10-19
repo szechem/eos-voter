@@ -9,6 +9,7 @@ import WalletPanelButtonStake from './Button/Stake';
 
 import WalletPanelButtonTransferReceive from './Button/Transfer/Receive';
 import WalletPanelButtonTransferSend from './Button/Transfer/Send';
+import WalletPanelButtonTransferWithdraw from './Button/Transfer/Withdraw';
 
 import WalletPanelButtonRamSell from './Button/Ram/Sell';
 import WalletPanelButtonRamBuy from './Button/Ram/Buy';
@@ -78,6 +79,15 @@ class WalletPanelUnlocked extends Component<Props> {
                   </Segment>
                   <Segment>
                     <WalletPanelButtonTransferSend
+                      actions={actions}
+                      balances={balances}
+                      blockExplorers={blockExplorers}
+                      settings={settings}
+                      system={system}
+                    />
+                  </Segment>
+                  <Segment>
+                    <WalletPanelButtonTransferWithdraw
                       actions={actions}
                       balances={balances}
                       blockExplorers={blockExplorers}

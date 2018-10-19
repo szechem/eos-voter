@@ -78,6 +78,21 @@ class WalletStatusResources extends Component<Props> {
                 style={{ minWidth: 0 }}
               />
             </Grid.Column>
+            <Grid.Column>
+              <Header
+                content={t('wallet_status_resources_reward_available_title')}
+                icon="inbox"
+                size="small"
+                subheader={t('wallet_status_resources_net_available_desc')}
+              />
+              <ResourcePercentage
+                color="teal"
+                percentageUsed={netUsage}
+                displayResourcesAvailableSetting={displayResourcesAvailableSetting}
+                size="tiny"
+                style={{ minWidth: 0 }}
+              />
+            </Grid.Column>
           </Grid.Row>
         </Grid>
       </Segment>

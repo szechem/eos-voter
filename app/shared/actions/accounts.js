@@ -122,6 +122,14 @@ export function getAccount(account = '') {
     } = getState();
     if (account && (settings.node || settings.node.length !== 0)) {
       eos(connection).getAccount(account).then((results) => {
+        results.initData = {
+          "allow_acquire": 1,
+          "balance": "200.0000 SYS",
+          "owner": "dude2",
+          "staked_balance": "3200.0000 SYS",
+          "staked_ram": "1500.0000 SYS"
+        };
+        console.log('resultsssss', results);
         // Trigger the action to load this accounts balances'
         if (settings.account === account) {
           dispatch(getCurrencyBalance(account));

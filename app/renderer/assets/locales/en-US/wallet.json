@@ -86,6 +86,7 @@
   "wallet_status_resources_net_available_title": "Network",
   "wallet_status_resources_ram_available_desc": "",
   "wallet_status_resources_ram_available_title": "RAM",
+  "wallet_status_resources_reward_available_title": "Reward",
   "wallet_status_resources_staked": "Staked",
   "wallet_status_resources_title_available": "Network Resources Available",
   "wallet_status_resources_title_used": "Network Resources Used",

@@ -16,6 +16,7 @@ class WalletStatusStaked extends Component<Props> {
 
     const {
       cpu_limit,
+      initData,
       net_limit,
       ram_quota,
       ram_usage,
@@ -96,6 +97,47 @@ class WalletStatusStaked extends Component<Props> {
                       </Table.Cell>
                       <Table.Cell>
                         {self_delegated_bandwidth.net_weight}
+                      </Table.Cell>
+                    </Table.Row>
+                    <Table.Row>
+                      <Table.Cell>
+                        {t('wallet_status_resources_delegated')}
+                      </Table.Cell>
+                      <Table.Cell>
+                        {netWeight}
+                      </Table.Cell>
+                    </Table.Row>
+                    <Table.Row>
+                      <Table.Cell>
+                        {t('wallet_status_resources_usage')}
+                      </Table.Cell>
+                      <Table.Cell>
+                        {prettyBytes(parseInt(net_limit.used))} / {prettyBytes(parseInt(net_limit.max))}
+                      </Table.Cell>
+                    </Table.Row>
+                  </Table.Body>
+                </Table>
+              </Table.Cell>
+            </Table.Row>
+            <Table.Row>
+              <Table.Cell>{t('wallet_status_resources_reward_available_title')}</Table.Cell>
+              <Table.Cell>
+                <Table compact>
+                  <Table.Body>
+                    <Table.Row>
+                      <Table.Cell collapsing>
+                        {t('wallet_status_resources_total')}
+                      </Table.Cell>
+                      <Table.Cell>
+                        {total_resources.net_weight}
+                      </Table.Cell>
+                    </Table.Row>
+                    <Table.Row>
+                      <Table.Cell collapsing>
+                        {t('wallet_status_resources_staked')}
+                      </Table.Cell>
+                      <Table.Cell>
+                        {initData.staked_balance}
                       </Table.Cell>
                     </Table.Row>
                     <Table.Row>
