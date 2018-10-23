@@ -4,19 +4,17 @@ import { Button, Divider, Form, Icon, Segment } from 'semantic-ui-react';
 import { translate } from 'react-i18next';
 
 import FormFieldMultiToken from '../../../../Global/Form/Field/MultiToken';
-import GlobalFormFieldAccount from '../../../../Global/Form/Field/Account';
-import WalletPanelFormTransferWithdrawConfirming from './Withdraw/Confirming';
+import WalletPanelFormWithdrawBitsharesEosConfirming from './ConfirmingBitsharesEos';
 
-class WalletPanelFormTransferWithdraw extends Component<Props> {
+class WalletPanelFormWithdrawBitsharesEos extends Component<Props> {
   constructor(props) {
     super(props);
     this.state = {
       asset: 'EOS',
       confirming: false,
-      from: props.settings.account,
+      owner: props.settings.account,
       quantity: '',
-      submitDisabled: false,
-      to: '',
+      submitDisabled: true,
       waiting: false,
       waitingStarted: 0
     };
@@ -24,13 +22,12 @@ class WalletPanelFormTransferWithdraw extends Component<Props> {
 
   onConfirm = () => {
     const {
-      from,
+      owner,
       quantity,
-      asset,
-      to
+      asset
     } = this.state;
     this.setState({ confirming: false }, () => {
-      this.props.actions.transfer(from, to, quantity, 'memo', asset);
+      this.props.actions.decrease(owner, quantity, asset);
     });
   }
 
@@ -84,10 +81,9 @@ class WalletPanelFormTransferWithdraw extends Component<Props> {
     const {
       asset,
       confirming,
-      from,
+      owner,
       quantity,
       submitDisabled,
-      to,
       waiting,
       waitingStarted
     } = this.state;
@@ -101,27 +97,18 @@ class WalletPanelFormTransferWithdraw extends Component<Props> {
       >
         {(confirming)
           ? (
-            <WalletPanelFormTransferWithdrawConfirming
+            <WalletPanelFormWithdrawBitsharesEosConfirming
               asset={asset}
               balances={balances}
-              from={from}
+              owner={owner}
               onBack={this.onBack}
               onConfirm={this.onConfirm}
               quantity={quantity}
-              to={to}
               waiting={waiting}
               waitingStarted={waitingStarted}
             />
           ) : (
             <Segment basic clearing>
-              <GlobalFormFieldAccount
-                autoFocus
-                fluid
-                label={t('transfer_label_to')}
-                name="to"
-                onChange={this.onChange}
-                value={to}
-              />
               <FormFieldMultiToken
                 balances={balances}
                 icon="x"
@@ -156,4 +143,4 @@ class WalletPanelFormTransferWithdraw extends Component<Props> {
   }
 }
 
-export default translate('transfer')(WalletPanelFormTransferWithdraw);
+export default translate('transfer')(WalletPanelFormWithdrawBitsharesEos);

@@ -21,7 +21,7 @@ class WalletPanelModalTransferReceive extends Component<Props> {
         open={open}
         size="tiny"
       >
-        <Header icon="arrow circle down" content={t('transfer_receive_modal_header')} />
+        <Header icon="arrow circle down" content={t('transfer_receive_bitshares_eos_modal_header')} />
         <Modal.Content>
           <Segment basic clearing vertical textAlign="center">
             <Header>

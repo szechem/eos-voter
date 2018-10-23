@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { translate } from 'react-i18next';
 
 import GlobalTransactionModal from '../../../../Global/Transaction/Modal';
-import WalletPanelFormTransferWithdraw from '../../Form/Transfer/Withdraw';
+import WalletPanelFormTransferBitsharesEos from '../../Form/Transfer/SendBitsharesEos';
 
 type Props = {
   actions: {
@@ -16,7 +16,7 @@ type Props = {
   t: () => void
 };
 
-class WalletPanelButtonTransferWithdraw extends Component<Props> {
+class WalletPanelButtonTransferBitsharesEos extends Component<Props> {
   props: Props;
 
   render() {
@@ -36,12 +36,12 @@ class WalletPanelButtonTransferWithdraw extends Component<Props> {
         blockExplorers={blockExplorers}
         button={{
           color: 'blue',
-          content: t('transfer_withdraw_beos_button_cta'),
+          content: t('transfer_send_bitshares_eos_button_cta'),
           fluid: true,
           icon: 'arrow circle up'
         }}
         content={(
-          <WalletPanelFormTransferWithdraw
+          <WalletPanelFormTransferBitsharesEos
             actions={actions}
             balances={balances}
             settings={settings}
@@ -49,7 +49,7 @@ class WalletPanelButtonTransferWithdraw extends Component<Props> {
           />
         )}
         icon="arrow circle up"
-        title={t('transfer_modal_withdraw_title')}
+        title={t('transfer_bitshares_eos_modal_title')}
         settings={settings}
         system={system}
       />
@@ -57,4 +57,4 @@ class WalletPanelButtonTransferWithdraw extends Component<Props> {
   }
 }
 
-export default translate('transfer')(WalletPanelButtonTransferWithdraw);
+export default translate('transfer')(WalletPanelButtonTransferBitsharesEos);

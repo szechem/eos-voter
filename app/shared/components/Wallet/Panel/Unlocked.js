@@ -5,13 +5,12 @@ import { Accordion, Menu, Segment } from 'semantic-ui-react';
 
 import WalletPanelButtonBroadcast from './Button/Broadcast';
 import WalletPanelButtonLock from './Button/Lock';
-import WalletPanelButtonStake from './Button/Stake';
 
 import WalletPanelButtonTransferReceive from './Button/Transfer/Receive';
-import WalletPanelButtonTransferSend from './Button/Transfer/Send';
-import WalletPanelButtonTransferWithdraw from './Button/Transfer/Withdraw';
+import WalletPanelButtonTransferSendBitsharesEos from './Button/Transfer/SendBitsharesEos';
 
-import WalletPanelButtonRamSell from './Button/Ram/Sell';
+import WalletPanelButtonWithdrawBitsharesEos from './Button/Withdraw/WithdrawBitsharesEos';
+
 import WalletPanelButtonRamBuy from './Button/Ram/Buy';
 
 class WalletPanelUnlocked extends Component<Props> {
@@ -67,18 +66,7 @@ class WalletPanelUnlocked extends Component<Props> {
               >
                 <Segment.Group>
                   <Segment>
-                    <WalletPanelButtonStake
-                      actions={actions}
-                      accounts={accounts}
-                      balances={balances}
-                      blockExplorers={blockExplorers}
-                      validate={validate}
-                      settings={settings}
-                      system={system}
-                    />
-                  </Segment>
-                  <Segment>
-                    <WalletPanelButtonTransferSend
+                    <WalletPanelButtonTransferSendBitsharesEos
                       actions={actions}
                       balances={balances}
                       blockExplorers={blockExplorers}
@@ -87,7 +75,7 @@ class WalletPanelUnlocked extends Component<Props> {
                     />
                   </Segment>
                   <Segment>
-                    <WalletPanelButtonTransferWithdraw
+                    <WalletPanelButtonWithdrawBitsharesEos
                       actions={actions}
                       balances={balances}
                       blockExplorers={blockExplorers}
@@ -102,17 +90,6 @@ class WalletPanelUnlocked extends Component<Props> {
                   </Segment>
                   <Segment>
                     <WalletPanelButtonRamBuy
-                      account={accounts[settings.account]}
-                      actions={actions}
-                      balances={balances}
-                      blockExplorers={blockExplorers}
-                      globals={globals}
-                      settings={settings}
-                      system={system}
-                    />
-                  </Segment>
-                  <Segment>
-                    <WalletPanelButtonRamSell
                       account={accounts[settings.account]}
                       actions={actions}
                       balances={balances}

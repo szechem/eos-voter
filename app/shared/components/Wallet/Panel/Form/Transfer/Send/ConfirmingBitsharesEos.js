@@ -3,9 +3,7 @@ import React, { Component } from 'react';
 import { Button, Divider, Header, Icon, Segment, Table } from 'semantic-ui-react';
 import { translate } from 'react-i18next';
 
-import WalletMessageContractTransfer from '../../../../../Global/Message/Contract/Transfer';
-
-class WalletPanelFormTransferWithdrawConfirming extends Component<Props> {
+class WalletPanelFormWithdrawConfirmingBitsharesEos extends Component<Props> {
   onConfirm = (e) => {
     const {
       onConfirm
@@ -38,7 +36,7 @@ class WalletPanelFormTransferWithdrawConfirming extends Component<Props> {
         <Header size="small">
           {t('transfer_confirming_title')}
           <Header.Subheader>
-            {t('transfer_confirming_body')}
+            {t('transfer_confirming_body_no_memo')}
           </Header.Subheader>
         </Header>
         <Table compact definition striped>
@@ -61,16 +59,6 @@ class WalletPanelFormTransferWithdrawConfirming extends Component<Props> {
             </Table.Row>
           </Table.Body>
         </Table>
-        <WalletMessageContractTransfer
-          data={{
-            from,
-            quantity,
-            to,
-            transaction: {
-              delay: 60
-            }
-          }}
-        />
         <Divider />
         <Button
           color="green"
@@ -89,4 +77,4 @@ class WalletPanelFormTransferWithdrawConfirming extends Component<Props> {
   }
 }
 
-export default translate('transfer')(WalletPanelFormTransferWithdrawConfirming);
+export default translate('transfer')(WalletPanelFormWithdrawConfirmingBitsharesEos);

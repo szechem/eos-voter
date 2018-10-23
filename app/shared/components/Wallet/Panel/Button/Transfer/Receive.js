@@ -33,7 +33,7 @@ class WalletPanelButtonTransferReceive extends Component<Props> {
         trigger={(
           <Button
             color="blue"
-            content={t('transfer_receive_button_cta')}
+            content={t('transfer_receive_bitshares_eos_button_cta')}
             fluid
             icon="arrow circle down"
             onClick={this.onOpen}
