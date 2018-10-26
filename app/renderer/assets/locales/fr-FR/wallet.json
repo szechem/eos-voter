@@ -7,9 +7,9 @@
   "wallet_account_lookup_failure_header": "Impossible d'effectuer une recherche de compte",
   "wallet_account_lookup_modal_accounts_found": "Comptes trouvés avec votre clé",
   "wallet_account_lookup_modal_accounts_found_none": "Aucun compte trouvé avec votre clé",
-  "wallet_account_lookup_modal_description": "Entrez votre clé publique (commence par EOS ...) pour trouver les comptes qui y sont associés.",
-  "wallet_account_lookup_modal_field_label": "Clé Publique (EOSxxxxx)",
-  "wallet_account_lookup_modal_key_invalid": "La clé entrée n'est pas une clé publique de EOS.",
+  "wallet_account_lookup_modal_description": "Entrez votre clé publique pour trouver les comptes qui y sont associés.",
+  "wallet_account_lookup_modal_field_label": "Clé Publique (xxxxx)",
+  "wallet_account_lookup_modal_key_invalid": "La clé entrée n'est pas une clé publique de BEOS.",
   "wallet_account_lookup_modal_title": "Lookup accounts by Public Key",
   "wallet_account_lookup_modal_trigger": "Trouvé le nom associé à votre compte ?",
   "wallet_account_request_backup_header": "Backup your new account",
@@ -93,7 +93,7 @@
   "wallet_status_resources_usage": "Usage",
   "wallet_status_tab_account_data": "Data",
   "wallet_status_tab_account_history": "History",
-  "wallet_status_tab_staked": "EOS Attribué",
+  "wallet_status_tab_staked": "BEOS Attribué",
   "wallet_status_tab_token_balances": "Balances",
   "wallet_status_total_balance": "Total"
 }

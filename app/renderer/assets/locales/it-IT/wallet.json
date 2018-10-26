@@ -7,9 +7,9 @@
   "wallet_account_lookup_failure_header": "Impossibile eseguire la ricerca dell'account",
   "wallet_account_lookup_modal_accounts_found": "Account trovati con la chiave corrispondente ... ",
   "wallet_account_lookup_modal_accounts_found_none": "Nessun account trovato con questa chiave",
-  "wallet_account_lookup_modal_description": "Inserisci la tua chiave pubblica (inizia con EOS ...) per cercare gli account ad essa associati.",
-  "wallet_account_lookup_modal_field_label": "Public Key (EOSxxxxx)",
-  "wallet_account_lookup_modal_key_invalid": "La chiave inserita non è una chiave pubblica EOS valida.",
+  "wallet_account_lookup_modal_description": "Inserisci la tua chiave pubblica per cercare gli account ad essa associati.",
+  "wallet_account_lookup_modal_field_label": "Public Key (xxxxx)",
+  "wallet_account_lookup_modal_key_invalid": "La chiave inserita non è una chiave pubblica BEOS valida.",
   "wallet_account_lookup_modal_title": "Cerca account con la  Public Key",
   "wallet_account_lookup_modal_trigger": "Cerchi il nome del tuo account? ",
   "wallet_account_request_backup_header": "Backup your new account",
@@ -93,7 +93,7 @@
   "wallet_status_resources_usage": "Uso",
   "wallet_status_tab_account_data": "Data",
   "wallet_status_tab_account_history": "History",
-  "wallet_status_tab_staked": "EOS investiti",
+  "wallet_status_tab_staked": "BEOS investiti",
   "wallet_status_tab_token_balances": "Balances",
   "wallet_status_total_balance": "Total"
 }
