@@ -9,10 +9,7 @@ import { delegatebwParams } from './system/delegatebw';
 export function createAccount(
   accountName,
   activeKey,
-  delegatedBw,
-  delegatedCpu,
   ownerKey,
-  ramAmount,
   transferTokens
 ) {
   return (dispatch: () => void, getState) => {
@@ -26,7 +23,7 @@ export function createAccount(
     dispatch({ type: types.SYSTEM_CREATEACCOUNT_PENDING });
 
     return eos(connection, true).transaction(tr => {
-      tr.newaccount({
+      /* tr.newaccount({
         creator: currentAccount,
         name: accountName,
         owner: ownerKey,
@@ -45,7 +42,23 @@ export function createAccount(
         delegatedBw.split(' ')[0],
         delegatedCpu.split(' ')[0],
         transferTokens
-      ));
+      )); */
+
+      tr.newaccount({
+        creator: 'eosio',
+        new_account: accountName,
+        owner_key: ownerKey,
+        active_key: activeKey,
+        ram_bytes: 0,
+        net_weight: 0,
+        cpu_weight: 0
+      });
+
+      tr.lock({
+        from: 'beos.token',
+        to: accountName,
+        quantity: transferTokens
+      });
     }, {
       broadcast: connection.broadcast,
       expireInSeconds: connection.expireInSeconds,

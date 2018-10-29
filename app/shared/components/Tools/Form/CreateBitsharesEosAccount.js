@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { translate } from 'react-i18next';
 import debounce from 'lodash/debounce';
 
-import { Segment, Form, Button } from 'semantic-ui-react';
+import { Segment, Form, Header, Button, Icon, Table } from 'semantic-ui-react';
 
 import GlobalFormFieldAccount from '../../Global/Form/Field/Account';
 import GlobalFormFieldKeyPublic from '../../Global/Form/Field/Key/Public';
@@ -12,9 +12,7 @@ class ToolsFormCreateBitsharesEosAccount extends Component<Props> {
   constructor(props) {
     super(props);
     const {
-      accountName,
-      delegatedBw,
-      delegatedCpu
+      accountName
     } = props;
 
     this.state = {
@@ -23,8 +21,6 @@ class ToolsFormCreateBitsharesEosAccount extends Component<Props> {
       showPublicActiveKeyError: false,
       showPublicOwnerKeyError: false,
       confirming: false,
-      delegatedBw,
-      delegatedCpu,
       submitDisabled: true
     };
   }
@@ -141,21 +137,14 @@ class ToolsFormCreateBitsharesEosAccount extends Component<Props> {
     const {
       accountName,
       activeKey,
-      delegatedBw,
-      delegatedCpu,
-      ownerKey,
-      ramAmount,
-      transferTokens
+      ownerKey
     } = this.state;
 
     createAccount(
       accountName,
       activeKey,
-      delegatedBw,
-      delegatedCpu,
       ownerKey,
-      ramAmount,
-      transferTokens
+      100
     );
   }
 
@@ -266,7 +255,51 @@ class ToolsFormCreateBitsharesEosAccount extends Component<Props> {
 
         {(shouldShowConfirm)
           ? (
-            <div>Account</div>
+            <Segment padding="true" basic>
+              <Header textAlign="center">
+                <p>{`${t('tools_account_creation_header')}`}</p>
+              </Header>
+              <Table size="small" celled>
+                <Table.Body>
+                  <Table.Row>
+                    <Table.Cell width={8}>
+                      {t('tools_form_create_account_owner_key')}
+                    </Table.Cell>
+                    <Table.Cell width={8}>
+                      {ownerKey}
+                    </Table.Cell>
+                  </Table.Row>
+                  <Table.Row>
+                    <Table.Cell width={8}>
+                      {t('tools_form_create_account_active_key')}
+                    </Table.Cell>
+                    <Table.Cell width={8}>
+                      {activeKey}
+                    </Table.Cell>
+                  </Table.Row>
+                  <Table.Row>
+                    <Table.Cell width={8}>
+                      {t('tools_form_create_account_account_name')}
+                    </Table.Cell>
+                    <Table.Cell width={8}>
+                      {accountName}
+                    </Table.Cell>
+                  </Table.Row>
+                </Table.Body>
+              </Table>
+              <Button
+                onClick={this.onBack}
+              >
+                <Icon name="arrow left" /> {t('tools_form_create_account_back')}
+              </Button>
+              <Button
+                color="blue"
+                floated="right"
+                onClick={this.onConfirm}
+              >
+                <Icon name="check" /> {t('tools_form_create_account_button')}
+              </Button>
+            </Segment>
           ) : ''}
       </Segment>
     );

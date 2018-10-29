@@ -11,7 +11,6 @@ import WalletPanelButtonTransferSendBitsharesEos from './Button/Transfer/SendBit
 
 import WalletPanelButtonWithdrawBitsharesEos from './Button/Withdraw/WithdrawBitsharesEos';
 
-import WalletPanelButtonRamBuy from './Button/Ram/Buy';
 
 class WalletPanelUnlocked extends Component<Props> {
   state = { activeIndex: 0 }
@@ -27,11 +26,8 @@ class WalletPanelUnlocked extends Component<Props> {
     const { activeIndex } = this.state;
     const {
       actions,
-      accounts,
       balances,
       blockExplorers,
-      globals,
-      validate,
       settings,
       system,
       transaction,
@@ -86,17 +82,6 @@ class WalletPanelUnlocked extends Component<Props> {
                   <Segment>
                     <WalletPanelButtonTransferReceive
                       accountName={settings.account}
-                    />
-                  </Segment>
-                  <Segment>
-                    <WalletPanelButtonRamBuy
-                      account={accounts[settings.account]}
-                      actions={actions}
-                      balances={balances}
-                      blockExplorers={blockExplorers}
-                      globals={globals}
-                      settings={settings}
-                      system={system}
                     />
                   </Segment>
                   {(settings.walletMode === 'watch')
