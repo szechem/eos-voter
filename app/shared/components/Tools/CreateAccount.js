@@ -5,7 +5,7 @@ import { translate } from 'react-i18next';
 import { Header, Segment } from 'semantic-ui-react';
 
 import GlobalTransactionHandler from '../Global/Transaction/Handler';
-import ToolsFormCreateAccount from './Form/CreateAccount';
+import ToolsFormCreateBitsharesEosAccount from './Form/CreateBitsharesEosAccount';
 import WalletPanelLocked from '../Wallet/Panel/Locked';
 
 class ToolsCreateAccount extends Component<Props> {
@@ -48,7 +48,7 @@ class ToolsCreateAccount extends Component<Props> {
               actions={actions}
               blockExplorers={blockExplorers}
               content={(
-                <ToolsFormCreateAccount
+                <ToolsFormCreateBitsharesEosAccount
                   account={account}
                   balance={balances[settings.account]}
                   contacts={settings.contacts}
