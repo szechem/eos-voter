@@ -41,7 +41,7 @@ class WalletPanelFormStake extends Component<Props> {
       cpuOriginal: Decimal(parsedCpuWeight),
       decimalCpuAmount: Decimal(parsedCpuWeight),
       decimalNetAmount: Decimal(parsedNetWeight),
-      EOSbalance: (props.balance && props.balance.EOS) ? props.balance.EOS : 0,
+      EOSbalance: (props.balance && props.balance.BEOS) ? props.balance.BEOS : 0,
       formError: null,
       netAmountValid: true,
       netOriginal: Decimal(parsedNetWeight),
@@ -233,7 +233,7 @@ class WalletPanelFormStake extends Component<Props> {
       submitDisabled
     } = this.state;
 
-    const EOSbalance = balance.EOS || 0;
+    const EOSbalance = balance.BEOS || 0;
 
     const shouldShowConfirm = this.state.confirming;
     const shouldShowForm = !shouldShowConfirm;

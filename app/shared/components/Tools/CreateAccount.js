@@ -51,11 +51,13 @@ class ToolsCreateAccount extends Component<Props> {
                 <ToolsFormCreateBitsharesEosAccount
                   account={account}
                   balance={balances[settings.account]}
+                  balances={balances}
                   contacts={settings.contacts}
                   globals={globals}
                   hideCancel
                   key="CreateAccountForm"
                   system={system}
+                  settings={settings}
                 />
               )}
               onClose={this.onClose}
