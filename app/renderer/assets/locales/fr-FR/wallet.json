@@ -39,7 +39,7 @@
   "wallet_mode_explain_undefined": "This wallet is from a legacy version and it's type is unknown. This should not cause any problems, and once you swap to another wallet and back, it should upgrade properly.",
   "wallet_mode_explain_watch": "This wallet is running as a 'Watch' wallet, meaning it will not store private keys and cannot sign transactions. Signing must be done via a cold wallet.",
   "wallet_panel_form_account": "Nom de compte",
-  "wallet_panel_form_create_wallet_body": "Pour utiliser eos-voter, entrez votre nom de compte et votre clé privée.",
+  "wallet_panel_form_create_wallet_body": "Pour utiliser beos-voter, entrez votre nom de compte et votre clé privée.",
   "wallet_panel_form_create_wallet_header": "Import de votre Compte",
   "wallet_panel_form_encrypt_wallet": "Sauvegardez/cryptez votre portefeuille avec votre mot de passe?",
   "wallet_panel_form_key": "WIF/Clé Privé",

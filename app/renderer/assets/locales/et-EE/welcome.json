@@ -12,7 +12,7 @@
   "welcome_connect_server": "Ühendu Serveriga",
   "welcome_created_by": "Autor",
   "welcome_enter_account": "Kinnita Konto",
-  "welcome_instructions_1": "Alustamiseks peab eos-voter ühenduma BEOS API seadmega.",
+  "welcome_instructions_1": "Alustamiseks peab beos-voter ühenduma BEOS API seadmega.",
   "welcome_instructions_2": "Sisesta seade, mille külge soovid ühendada.",
   "welcome_instructions_3": "Sisesta avalik võti või kontonimi.",
   "welcome_instructions_3_cold": "Sisesta kontonimi, mida kasutada.",

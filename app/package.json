@@ -1,6 +1,6 @@
 {
-  "name": "eos-voter",
-  "productName": "eos-voter",
+  "name": "beos-voter",
+  "productName": "beos-voter",
   "version": "0.5.3",
   "description": "",
   "main": "./main.prod.js",

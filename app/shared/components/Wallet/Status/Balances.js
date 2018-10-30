@@ -40,7 +40,7 @@ class WalletStatusBalances extends Component<Props> {
         <Table.Row key="EOS">
           <Table.Cell width={2}>
             <Header>
-              EOS
+              BEOS
               <Header.Subheader>
                 eosio.token
               </Header.Subheader>
@@ -51,15 +51,15 @@ class WalletStatusBalances extends Component<Props> {
               <Table.Body>
                 <Table.Row>
                   <Table.Cell width={4}>{t('wallet_status_liquid')}</Table.Cell>
-                  <Table.Cell>{(tokens.EOS) ? tokens.EOS.toFixed(4) : '0.0000'} EOS</Table.Cell>
+                  <Table.Cell>{(tokens.EOS) ? tokens.EOS.toFixed(4) : '0.0000'} BEOS</Table.Cell>
                 </Table.Row>
                 <Table.Row>
                   <Table.Cell>{t('wallet_status_balances_staked_to_self')}</Table.Cell>
-                  <Table.Cell>{totalStakedToSelf.toFixed(4)} EOS </Table.Cell>
+                  <Table.Cell>{totalStakedToSelf.toFixed(4)} BEOS </Table.Cell>
                 </Table.Row>
                 <Table.Row>
                   <Table.Cell>{t('wallet_status_balances_staked_to_others')}</Table.Cell>
-                  <Table.Cell>{totalStakedToOthers.toFixed(4)} EOS </Table.Cell>
+                  <Table.Cell>{totalStakedToOthers.toFixed(4)} BEOS </Table.Cell>
                 </Table.Row>
                 {(refundDate)
                   ? (
@@ -78,7 +78,7 @@ class WalletStatusBalances extends Component<Props> {
                           )
                           : false
                         }
-                        {totalBeingUnstaked.toFixed(4)} EOS (<TimeAgo date={refundDate} />)
+                        {totalBeingUnstaked.toFixed(4)} BEOS (<TimeAgo date={refundDate} />)
                       </Table.Cell>
                     </Table.Row>
                   )
@@ -86,7 +86,7 @@ class WalletStatusBalances extends Component<Props> {
                 }
                 <Table.Row>
                   <Table.Cell>{t('wallet_status_total_balance')}</Table.Cell>
-                  <Table.Cell>{totalTokens.toFixed(4)} EOS</Table.Cell>
+                  <Table.Cell>{totalTokens.toFixed(4)} BEOS</Table.Cell>
                 </Table.Row>
                 <Table.Row>
                   <Table.Cell>{t('wallet_status_ram_amount')}</Table.Cell>

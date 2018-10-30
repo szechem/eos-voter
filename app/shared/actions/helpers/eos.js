@@ -5,7 +5,7 @@ const ecc = require('eosjs-ecc');
 const Eos = require('eosjs');
 
 export default function eos(connection, signing = false) {
-  console.log('conncectionnnnn', connection);
+
   const decrypted = Object.assign({}, connection);
   if (signing && decrypted.keyProviderObfuscated) {
     const {
