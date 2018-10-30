@@ -11,7 +11,7 @@ class WalletPanelFormTransferSendBitsharesEos extends Component<Props> {
   constructor(props) {
     super(props);
     this.state = {
-      asset: 'EOS',
+      asset: 'PXBTS',
       confirming: false,
       from: props.settings.account,
       quantity: '',

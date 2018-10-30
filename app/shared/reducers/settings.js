@@ -18,7 +18,7 @@ const initialState = {
   // Custom tokens the wallet should be tracking
   customTokens: [
     // Always track the EOS token
-    'eosio.token:EOS'
+    'eosio.token:BEOS', 'eosio.token:PXBTS'
   ],
   // Defaults to displaying resources remaining
   displayResourcesAvailable: true,
