@@ -244,7 +244,7 @@ class ToolsFormCreateBitsharesEosAccount extends Component<Props> {
                 <FormFieldMultiToken
                   balances={balances}
                   icon="x"
-                  label={t('transfer_label_token_and_quantity')}
+                  label={t('tools_label_token_and_quantity')}
                   loading={false}
                   maximum={balance[asset]}
                   name="quantity"
@@ -308,7 +308,7 @@ class ToolsFormCreateBitsharesEosAccount extends Component<Props> {
                   </Table.Row>
                   <Table.Row>
                     <Table.Cell width={8}>
-                      {t('transfer_label_quantity')}
+                      {t('tools_label_quantity')}
                     </Table.Cell>
                     <Table.Cell width={8}>
                       {quantity}

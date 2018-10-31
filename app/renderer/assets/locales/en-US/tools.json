@@ -96,6 +96,8 @@
   "tools_form_proxy_info_twitter": "Twitter Username",
   "tools_form_proxy_info_website": "Website Url",
   "tools_form_proxy_info_wechat": "Wechat Username",
+  "tools_label_token_and_quantity": "Quantity",
+  "tools_label_quantity": "Quantity",
   "tools_keys_key_generation_copy_clipboard": "Copy to Clipboard",
   "tools_keys_key_generation_header": "Key Pair Generation",
   "tools_keys_key_generation_new_key": "Generate Key",
