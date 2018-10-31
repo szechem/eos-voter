@@ -42,22 +42,20 @@ export function createAccount(
         delegatedBw.split(' ')[0],
         delegatedCpu.split(' ')[0],
         transferTokens
-      )); */
-
+      ));
+      tr.lock({
+        from: 'beos.token',
+        to: accountName,
+        quantity: transferTokens
+      }); */
       tr.newaccount({
         creator: 'eosio',
         new_account: accountName,
         owner_key: ownerKey,
         active_key: activeKey,
-        ram_bytes: 0,
+        ram_bytes: 30000,
         net_weight: 0,
         cpu_weight: 0
-      });
-
-      tr.lock({
-        from: 'beos.token',
-        to: accountName,
-        quantity: transferTokens
       });
     }, {
       broadcast: connection.broadcast,
