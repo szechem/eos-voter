@@ -15,8 +15,8 @@ export function decrease(owner, quantity, symbol = 'BEOS') {
     try {
       const contracts = balances.__contracts;
       const account = contracts[symbol].contract;
-      return eos(connection, true).transaction('beos.token', contract => {
-        contract.decrease(
+      return eos(connection, true).transaction('beos.gateway', contract => {
+        contract.withdraw(
           owner,
           quantity,
         );
@@ -26,7 +26,7 @@ export function decrease(owner, quantity, symbol = 'BEOS') {
         sign: connection.sign
       }).then((tx) => {
         // If this is an offline transaction, also store the ABI
-        if (!connection.sign && account !== 'beos.token') {
+        if (!connection.sign && account !== 'beos.gateway') {
           return eos(connection, true).getAbi(account).then((contract) =>
             dispatch({
               payload: {

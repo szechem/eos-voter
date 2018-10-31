@@ -5,7 +5,6 @@ import debounce from 'lodash/debounce';
 
 import { Segment, Form, Header, Button, Icon, Table } from 'semantic-ui-react';
 
-import FormFieldMultiToken from '../../Global/Form/Field/MultiToken';
 import GlobalFormFieldAccount from '../../Global/Form/Field/Account';
 import GlobalFormFieldKeyPublic from '../../Global/Form/Field/Key/Public';
 
@@ -17,12 +16,10 @@ class ToolsFormCreateBitsharesEosAccount extends Component<Props> {
     } = props;
 
     this.state = {
-      asset: 'PXBTS',
       accountName,
       showAccountValidationError: false,
       showPublicActiveKeyError: false,
       showPublicOwnerKeyError: false,
-      quantity: '',
       confirming: false,
       submitDisabled: true
     };
@@ -140,33 +137,27 @@ class ToolsFormCreateBitsharesEosAccount extends Component<Props> {
     const {
       accountName,
       activeKey,
-      ownerKey,
-      quantity
+      ownerKey
     } = this.state;
 
     createAccount(
       accountName,
       activeKey,
-      ownerKey,
-      quantity
+      ownerKey
     );
   }
 
   render() {
     const {
-      balances,
       hideCancel,
       onClose,
-      settings,
       system,
       t
     } = this.props;
 
     const {
-      asset,
       accountName,
       activeKey,
-      quantity,
       ownerKey,
       showAccountValidationError
     } = this.state;
@@ -206,8 +197,6 @@ class ToolsFormCreateBitsharesEosAccount extends Component<Props> {
       publicOwnerKeyError = <p>{`${t('tools_public_owner_key_error')}`}</p>;
     }
 
-    const balance = balances[settings.account];
-
     return (
       <Segment
         loading={system.CREATEACCOUNT === 'PENDING'}
@@ -241,17 +230,6 @@ class ToolsFormCreateBitsharesEosAccount extends Component<Props> {
                 />
                 {accountTakenError}
                 {accountValidationError}
-                <FormFieldMultiToken
-                  balances={balances}
-                  icon="x"
-                  label={t('tools_label_token_and_quantity')}
-                  loading={false}
-                  maximum={balance[asset]}
-                  name="quantity"
-                  onChange={this.onChange}
-                  settings={settings}
-                  value={quantity}
-                />
                 <Segment basic clearing>
                   {(!hideCancel)
                     ? (
@@ -304,14 +282,6 @@ class ToolsFormCreateBitsharesEosAccount extends Component<Props> {
                     </Table.Cell>
                     <Table.Cell width={8}>
                       {accountName}
-                    </Table.Cell>
-                  </Table.Row>
-                  <Table.Row>
-                    <Table.Cell width={8}>
-                      {t('tools_label_quantity')}
-                    </Table.Cell>
-                    <Table.Cell width={8}>
-                      {quantity}
                     </Table.Cell>
                   </Table.Row>
                 </Table.Body>

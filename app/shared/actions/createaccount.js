@@ -9,8 +9,7 @@ import { delegatebwParams } from './system/delegatebw';
 export function createAccount(
   accountName,
   activeKey,
-  ownerKey,
-  transferTokens
+  ownerKey
 ) {
   return (dispatch: () => void, getState) => {
     const {
@@ -51,11 +50,14 @@ export function createAccount(
       tr.newaccount({
         creator: 'eosio',
         new_account: accountName,
-        owner_key: ownerKey,
-        active_key: activeKey,
-        ram_bytes: 30000,
-        net_weight: 0,
-        cpu_weight: 0
+        owner: ownerKey,
+        active: activeKey
+      });
+
+      tr.delegateram({
+        payer: 'eosio',
+        receiver: accountName,
+        bytes: 30000
       });
     }, {
       broadcast: connection.broadcast,
