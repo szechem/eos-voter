@@ -1,0 +1,4 @@
+[submodule "eosjs"]
+	path = eosjs
+	url = https://github.com/szechem/eosjs.git
+	branch = master-greymass

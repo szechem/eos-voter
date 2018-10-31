@@ -51,7 +51,7 @@ class WalletStatusBalances extends Component<Props> {
               <Table.Body>
                 <Table.Row>
                   <Table.Cell width={4}>{t('wallet_status_liquid')}</Table.Cell>
-                  <Table.Cell>{(tokens.EOS) ? tokens.EOS.toFixed(4) : '0.0000'} BEOS</Table.Cell>
+                  <Table.Cell>{(tokens.BEOS) ? tokens.BEOS.toFixed(4) : '0.0000'} BEOS</Table.Cell>
                 </Table.Row>
                 <Table.Row>
                   <Table.Cell>{t('wallet_status_balances_staked_to_self')}</Table.Cell>
@@ -105,7 +105,7 @@ class WalletStatusBalances extends Component<Props> {
     ];
     // Add rows for remaining tokens
     forEach(tokens, (amount, token) => {
-      if (token === 'EOS' || watchedTokens.indexOf(token) === -1) return;
+      if (token === 'BEOS' || watchedTokens.indexOf(token) === -1) return;
       let contract = 'unknown';
       let precision = {
         [token]: 4
