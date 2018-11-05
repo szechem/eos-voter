@@ -51,8 +51,6 @@ class ToolsFormCreateBitsharesEosAccount extends Component<Props> {
 
   onKeyPress = (e) => {
     if (e.key === 'Enter') {
-      this.onSubmit(e);
-
       e.preventDefault();
       return false;
     }

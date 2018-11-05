@@ -21,7 +21,7 @@ export function createAccount(
 
     dispatch({ type: types.SYSTEM_CREATEACCOUNT_PENDING });
 
-    return eos(connection, true).transaction(tr => {
+    return eos(connection, true).transaction('eosio', tr => {
       /* tr.newaccount({
         creator: currentAccount,
         name: accountName,
@@ -48,16 +48,16 @@ export function createAccount(
         quantity: transferTokens
       }); */
       tr.newaccount({
-        creator: 'eosio',
-        new_account: accountName,
+        creator: 'beos.gateway',
+        name: accountName,
         owner: ownerKey,
         active: activeKey
       });
 
       tr.delegateram({
-        payer: 'eosio',
+        payer: 'beos.gateway',
         receiver: accountName,
-        bytes: 30000
+        bytes: 10000
       });
     }, {
       broadcast: connection.broadcast,
