@@ -51,8 +51,14 @@ class ToolsFormCreateBitsharesEosAccount extends Component<Props> {
 
   onKeyPress = (e) => {
     if (e.key === 'Enter') {
-      e.preventDefault();
-      return false;
+      if (this.props.system.ACCOUNT_AVAILABLE === 'SUCCESS'
+          && !this.state.showAccountValidationError
+          && !this.state.showPublicActiveKeyError
+          && !this.state.showPublicOwnerKeyError) {
+        this.onSubmit(e);
+        e.preventDefault();
+        return false;
+      }
     }
   }
 
@@ -207,17 +213,19 @@ class ToolsFormCreateBitsharesEosAccount extends Component<Props> {
                 onSubmit={this.onSubmit}
               >
                 <GlobalFormFieldKeyPublic
-                  defaultValue=""
+                  defaultValue={ownerKey || ''}
                   label={t('tools_form_create_account_owner_key')}
                   name="ownerKey"
                   onChange={this.onChange}
+                  value={ownerKey || ''}
                 />
                 {publicOwnerKeyError}
                 <GlobalFormFieldKeyPublic
-                  defaultValue=""
+                  defaultValue={activeKey || ''}
                   label={t('tools_form_create_account_active_key')}
                   name="activeKey"
                   onChange={this.onChange}
+                  value={activeKey || ''}
                 />
                 {publicActiveKeyError}
                 <GlobalFormFieldAccount
