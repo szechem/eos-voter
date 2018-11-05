@@ -1,23 +1,21 @@
 import * as types from './types';
 
 import eos from './helpers/eos';
+import { getCurrencyBalance } from './accounts';
 
-export function removelock(owner, symbol = 'BEOS') {
+export function withdraw(owner, quantity) {
   return (dispatch: () => void, getState) => {
     const {
-      balances,
       connection
     } = getState();
     dispatch({
-      type: types.SYSTEM_REMOVELOCK_PENDING
+      type: types.SYSTEM_TRANSFER_PENDING
     });
     try {
-      const contracts = balances.__contracts;
-      const account = contracts[symbol].contract;
-      return eos(connection, true).transaction(account, contract => {
-        contract.removelock(
+      return eos(connection, true).transaction('beos.gateway', contract => {
+        contract.withdraw(
           owner,
-          symbol,
+          quantity,
         );
       }, {
         broadcast: connection.broadcast,
@@ -25,33 +23,34 @@ export function removelock(owner, symbol = 'BEOS') {
         sign: connection.sign
       }).then((tx) => {
         // If this is an offline transaction, also store the ABI
-        if (!connection.sign && account !== 'eosio.token') {
-          return eos(connection, true).getAbi(account).then((contract) =>
+        if (!connection.sign) {
+          return eos(connection, true).getAbi('beos.gateway').then((contract) =>
             dispatch({
               payload: {
                 contract,
                 tx
               },
-              type: types.SYSTEM_REMOVELOCK_SUCCESS
+              type: types.SYSTEM_TRANSFER_SUCCESS
             }));
         }
+        dispatch(getCurrencyBalance(owner));
         return dispatch({
           payload: { tx },
-          type: types.SYSTEM_REMOVELOCK_SUCCESS
+          type: types.SYSTEM_TRANSFER_SUCCESS
         });
       }).catch((err) => dispatch({
         payload: { err },
-        type: types.SYSTEM_REMOVELOCK_FAILURE
+        type: types.SYSTEM_TRANSFER_FAILURE
       }));
     } catch (err) {
       return dispatch({
         payload: { err },
-        type: types.SYSTEM_REMOVELOCK_FAILURE
+        type: types.SYSTEM_TRANSFER_FAILURE
       });
     }
   };
 }
 
 export default {
-  removelock
+  withdraw
 };

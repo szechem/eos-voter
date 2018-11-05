@@ -20,10 +20,8 @@ import * as BuyRamBytesActions from '../actions/system/buyrambytes';
 import * as BuyRamActions from '../actions/system/buyram';
 import * as CreateAccountActions from '../actions/createaccount';
 import * as ChainActions from '../actions/chain';
-import * as DecreaseActions from '../actions/decrease';
 import * as GlobalsActions from '../actions/globals';
 import * as ProducersActions from '../actions/producers';
-import * as RemovelockActions from '../actions/removelock';
 import * as SellRamActions from '../actions/system/sellram';
 import * as SettingsActions from '../actions/settings';
 import * as StakeActions from '../actions/stake';
@@ -33,6 +31,7 @@ import * as TransferActions from '../actions/transfer';
 import * as ValidateActions from '../actions/validate';
 import * as VoteProducerActions from '../actions/system/voteproducer';
 import * as WalletActions from '../actions/wallet';
+import * as WithdrawActions from '../actions/withdraw';
 import * as SystemStateActions from '../actions/system/systemstate';
 
 type Props = {
@@ -206,10 +205,8 @@ function mapDispatchToProps(dispatch) {
       ...BuyRamBytesActions,
       ...ChainActions,
       ...CreateAccountActions,
-      ...DecreaseActions,
       ...GlobalsActions,
       ...ProducersActions,
-      ...RemovelockActions,
       ...SellRamActions,
       ...SettingsActions,
       ...StakeActions,
@@ -219,7 +216,8 @@ function mapDispatchToProps(dispatch) {
       ...TransferActions,
       ...ValidateActions,
       ...VoteProducerActions,
-      ...WalletActions
+      ...WalletActions,
+      ...WithdrawActions
     }, dispatch)
   };
 }

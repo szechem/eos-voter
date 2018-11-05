@@ -25,22 +25,6 @@ class ToolsFormCreateBitsharesEosAccount extends Component<Props> {
     };
   }
 
-  componentDidMount() {
-    this.tick();
-    this.interval = setInterval(this.tick.bind(this), 30000);
-  }
-
-  componentWillUnmount() {
-    clearInterval(this.interval);
-  }
-
-  tick() {
-    const {
-      account,
-      actions
-    } = this.props;
-  }
-
   onSubmit = (e) => {
     this.setState({
       confirming: true

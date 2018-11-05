@@ -23,11 +23,10 @@ class WalletPanelFormWithdrawBitsharesEos extends Component<Props> {
   onConfirm = () => {
     const {
       owner,
-      quantity,
-      asset
+      quantity
     } = this.state;
     this.setState({ confirming: false }, () => {
-      this.props.actions.decrease(owner, quantity, asset);
+      this.props.actions.withdraw(owner, quantity);
     });
   }
 
