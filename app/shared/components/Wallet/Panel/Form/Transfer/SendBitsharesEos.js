@@ -15,6 +15,8 @@ class WalletPanelFormTransferSendBitsharesEos extends Component<Props> {
       confirming: false,
       from: props.settings.account,
       quantity: '',
+      quantityDisabled: true,
+      showAccountValidationError: false,
       submitDisabled: true,
       to: '',
       waiting: false,
@@ -62,14 +64,23 @@ class WalletPanelFormTransferSendBitsharesEos extends Component<Props> {
   }
 
   onChange = (e, { name, value }) => {
-    const newState = { [name]: value };
+    const newState = {
+      showAccountValidationError: false,
+      [name]: value
+    };
     const re = /^[a-z1-5]+$/;
     if (name === 'to') {
       if (re.test(value) && (value.length === 12)) {
-        newState.submitDisabled = false;
+        newState.showAccountValidationError = false;
       } else {
-        newState.submitDisabled = true;
+        newState.showAccountValidationError = true;
       }
+    }
+
+    if (name === 'quantity') {
+      this.setState({
+        quantityDisabled: false
+      });
     }
     this.setState(newState);
   }
@@ -93,17 +104,30 @@ class WalletPanelFormTransferSendBitsharesEos extends Component<Props> {
       confirming,
       from,
       quantity,
-      submitDisabled,
+      quantityDisabled,
+      showAccountValidationError,
       to,
       waiting,
       waitingStarted
     } = this.state;
 
+    let {
+      submitDisabled
+    } = this.state;
+
     const balance = balances[settings.account];
     let destinationAccountValidation = null;
 
-    if (submitDisabled === true) {
-      destinationAccountValidation = <p>{`${t('transfer_account_validation_error')}`}</p>;
+    if (!showAccountValidationError && !quantityDisabled) {
+      submitDisabled = false;
+    }
+
+    if (showAccountValidationError || quantityDisabled) {
+      submitDisabled = true;
+    }
+
+    if (showAccountValidationError) {
+      destinationAccountValidation = <p className="beos-validation-error">{`${t('transfer_account_validation_error')}`}</p>;
     }
 
     return (

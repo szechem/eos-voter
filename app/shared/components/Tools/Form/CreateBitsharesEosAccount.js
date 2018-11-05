@@ -163,7 +163,7 @@ class ToolsFormCreateBitsharesEosAccount extends Component<Props> {
 
     if (system.ACCOUNT_AVAILABLE === 'FAILURE') {
       submitDisabled = true;
-      accountTakenError = <p>{`${t('tools_account_taken_error')}`}</p>;
+      accountTakenError = <p className="beos-validation-error">{`${t('tools_account_taken_error')}`}</p>;
     }
 
     if (system.ACCOUNT_AVAILABLE === 'SUCCESS' && !showAccountValidationError) {
@@ -172,17 +172,17 @@ class ToolsFormCreateBitsharesEosAccount extends Component<Props> {
 
     if (showAccountValidationError) {
       submitDisabled = true;
-      accountValidationError = <p>{`${t('tools_account_validation_error')}`}</p>;
+      accountValidationError = <p className="beos-validation-error">{`${t('tools_account_validation_error')}`}</p>;
     }
 
     if (this.state.showPublicActiveKeyError) {
       submitDisabled = true;
-      publicActiveKeyError = <p>{`${t('tools_public_active_key_error')}`}</p>;
+      publicActiveKeyError = <p className="beos-validation-error">{`${t('tools_public_active_key_error')}`}</p>;
     }
 
     if (this.state.showPublicOwnerKeyError) {
       submitDisabled = true;
-      publicOwnerKeyError = <p>{`${t('tools_public_owner_key_error')}`}</p>;
+      publicOwnerKeyError = <p className="beos-validation-error">{`${t('tools_public_owner_key_error')}`}</p>;
     }
 
     return (

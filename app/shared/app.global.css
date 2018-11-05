@@ -104,3 +104,8 @@ body {
   width: 100%; }
 
 /*# sourceMappingURL=index.css.map */
+
+/* BEOS */
+.beos-validation-error {
+  color: red;
+}
