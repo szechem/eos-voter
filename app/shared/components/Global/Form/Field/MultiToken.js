@@ -72,7 +72,6 @@ export default class GlobalFormFieldMultiToken extends Component<Props> {
         </label>
         <Input
           autoFocus={autoFocus}
-          control={Input}
           defaultValue={this.state.quantity}
           loading={loading}
           name={name}

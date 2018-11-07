@@ -171,7 +171,7 @@ class ToolsContainer extends Component<Props> {
       .map((pane) => {
         if (pane.header) {
           return {
-            menuItem: <Menu.Header className="ui">{t(`tools_menu_${pane.name}_header`)}</Menu.Header>
+            menuItem: { content: <Menu.Header key={pane.name} className="ui">{t(`tools_menu_${pane.name}_header`)}</Menu.Header>, disabled: true, key: pane.name }
           };
         }
         return {

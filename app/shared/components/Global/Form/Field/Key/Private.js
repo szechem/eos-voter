@@ -54,7 +54,7 @@ class GlobalFormFieldKeyPrivate extends Component<Props> {
     } = this.state;
     return (
       <React.Fragment>
-        <p>
+        <div>
           <Form.Field
             autoFocus={autoFocus}
             control={Input}
@@ -69,14 +69,14 @@ class GlobalFormFieldKeyPrivate extends Component<Props> {
             placeholder={placeholder}
             type={(visible) ? 'text' : 'password'}
           />
-        </p>
-        <p>
+        </div>
+        <div>
           <Checkbox
             label={t('welcome:welcome_key_compare_visible')}
             onChange={this.onToggleKey}
             checked={visible}
           />
-        </p>
+        </div>
       </React.Fragment>
     );
   }

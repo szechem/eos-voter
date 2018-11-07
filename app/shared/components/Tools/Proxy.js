@@ -16,6 +16,8 @@ class ToolsProxy extends Component<Props> {
     actions.getTable('regproxyinfo', 'regproxyinfo', 'proxies');
   }
 
+  onClose = () => this.props.actions.clearSystemState();
+
   render() {
     const {
       accounts,

@@ -176,13 +176,13 @@ class WelcomeConnectionContainer extends Component<Props> {
         );
       }
       checkbox = (
-        <p>
+        <div>
           <Checkbox
             label={t('welcome:welcome_ssl_warning_confirm')}
             onChange={this.onConfirm}
             checked={sslConfirm}
           />
-        </p>
+        </div>
       );
     }
     // safeish true and ssl or non-ssl confirmed
