@@ -65,12 +65,11 @@ class WalletPanelFormTransferSendBitsharesEos extends Component<Props> {
 
   onChange = (e, { name, value }) => {
     const newState = {
-      showAccountValidationError: false,
       [name]: value
     };
     const re = /^[a-z1-5]+$/;
     if (name === 'to') {
-      if (re.test(value) && (value.length === 12)) {
+      if ((re.test(value) && (value.length < 13)) || (value === '')) {
         newState.showAccountValidationError = false;
       } else {
         newState.showAccountValidationError = true;
@@ -128,6 +127,10 @@ class WalletPanelFormTransferSendBitsharesEos extends Component<Props> {
 
     if (showAccountValidationError) {
       destinationAccountValidation = <p className="beos-validation-error">{`${t('transfer_account_validation_error')}`}</p>;
+    }
+
+    if (to === '') {
+      submitDisabled = true;
     }
 
     return (

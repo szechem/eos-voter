@@ -11,12 +11,11 @@ import GlobalFormFieldKeyPublic from '../../Global/Form/Field/Key/Public';
 class ToolsFormCreateBitsharesEosAccount extends Component<Props> {
   constructor(props) {
     super(props);
-    const {
-      accountName
-    } = props;
 
     this.state = {
-      accountName,
+      accountName: '',
+      activeKey: '',
+      ownerKey: '',
       showAccountValidationError: false,
       showPublicActiveKeyError: false,
       showPublicOwnerKeyError: false,
@@ -38,7 +37,10 @@ class ToolsFormCreateBitsharesEosAccount extends Component<Props> {
       if (this.props.system.ACCOUNT_AVAILABLE === 'SUCCESS'
           && !this.state.showAccountValidationError
           && !this.state.showPublicActiveKeyError
-          && !this.state.showPublicOwnerKeyError) {
+          && !this.state.showPublicOwnerKeyError
+          && this.state.accountName !== ''
+          && this.state.activeKey !== ''
+          && this.state.ownerKey !== '') {
         this.onSubmit(e);
         e.preventDefault();
         return false;
@@ -48,12 +50,11 @@ class ToolsFormCreateBitsharesEosAccount extends Component<Props> {
 
   onChange = debounce((e, { name, value, valid }) => {
     const newState = {
-      showAccountValidationError: false,
       [name]: value
     };
     const re = /^[a-z1-5]+$/;
     if (name === 'accountName') {
-      if (re.test(value) && (value.length === 12)) {
+      if ((re.test(value) && (value.length < 13)) || (value === '')) {
         newState.showAccountValidationError = false;
       } else {
         newState.showAccountValidationError = true;
@@ -183,6 +184,10 @@ class ToolsFormCreateBitsharesEosAccount extends Component<Props> {
     if (this.state.showPublicOwnerKeyError) {
       submitDisabled = true;
       publicOwnerKeyError = <p className="beos-validation-error">{`${t('tools_public_owner_key_error')}`}</p>;
+    }
+
+    if ((this.state.accountName === '') || (this.state.activeKey === '') || (this.state.ownerKey === '')) {
+      submitDisabled = true;
     }
 
     return (
