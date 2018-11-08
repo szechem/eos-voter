@@ -31,7 +31,7 @@ class WalletPanelButtonWithdrawBitsharesEos extends Component<Props> {
 
     return (
       <GlobalTransactionModal
-        actionName="TRANSFER"
+        actionName="WITHDRAW"
         actions={actions}
         blockExplorers={blockExplorers}
         button={{

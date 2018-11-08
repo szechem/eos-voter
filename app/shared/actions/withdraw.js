@@ -9,7 +9,7 @@ export function withdraw(owner, quantity) {
       connection
     } = getState();
     dispatch({
-      type: types.SYSTEM_TRANSFER_PENDING
+      type: types.SYSTEM_WITHDRAW_PENDING
     });
     try {
       return eos(connection, true).transaction('beos.gateway', contract => {
@@ -30,22 +30,22 @@ export function withdraw(owner, quantity) {
                 contract,
                 tx
               },
-              type: types.SYSTEM_TRANSFER_SUCCESS
+              type: types.SYSTEM_WITHDRAW_SUCCESS
             }));
         }
         dispatch(getCurrencyBalance(owner));
         return dispatch({
           payload: { tx },
-          type: types.SYSTEM_TRANSFER_SUCCESS
+          type: types.SYSTEM_WITHDRAW_SUCCESS
         });
       }).catch((err) => dispatch({
         payload: { err },
-        type: types.SYSTEM_TRANSFER_FAILURE
+        type: types.SYSTEM_WITHDRAW_FAILURE
       }));
     } catch (err) {
       return dispatch({
         payload: { err },
-        type: types.SYSTEM_TRANSFER_FAILURE
+        type: types.SYSTEM_WITHDRAW_FAILURE
       });
     }
   };
