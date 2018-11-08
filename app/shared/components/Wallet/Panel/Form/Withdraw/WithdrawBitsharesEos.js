@@ -91,7 +91,7 @@ class WalletPanelFormWithdrawBitsharesEos extends Component<Props> {
 
     return (
       <Form
-        loading={system.TRANSFER === 'PENDING'}
+        loading={system.WITHDRAW === 'PENDING'}
         onSubmit={this.onSubmit}
       >
         {(confirming)
