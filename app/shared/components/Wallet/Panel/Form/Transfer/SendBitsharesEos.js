@@ -67,7 +67,7 @@ class WalletPanelFormTransferSendBitsharesEos extends Component<Props> {
     const newState = {
       [name]: value
     };
-    const re = /^[a-z1-5]+$/;
+    const re = /^[a-z1-5.]+$/;
     if (name === 'to') {
       if ((re.test(value) && (value.length < 13)) || (value === '')) {
         newState.showAccountValidationError = false;
