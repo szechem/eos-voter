@@ -33,19 +33,19 @@ class WalletPanelFormWithdrawBitsharesEosConfirming extends Component<Props> {
     return (
       <Segment basic clearing vertical>
         <Header size="small">
-          {t('transfer_confirming_title')}
+          {t('withdraw_confirming_title')}
           <Header.Subheader>
-            {t('transfer_confirming_body_quantity')}
+            {t('withdraw_confirming_body_quantity')}
           </Header.Subheader>
         </Header>
         <Table compact definition striped>
           <Table.Body>
             <Table.Row>
-              <Table.Cell width={4}>{t('transfer_label_from')}</Table.Cell>
+              <Table.Cell width={4}>{t('withdraw_label_from')}</Table.Cell>
               <Table.Cell>{owner}</Table.Cell>
             </Table.Row>
             <Table.Row>
-              <Table.Cell>{t('transfer_label_quantity')}</Table.Cell>
+              <Table.Cell>{t('withdraw_label_quantity')}</Table.Cell>
               <Table.Cell>
                 {quantity}
                 {' '}
@@ -72,4 +72,4 @@ class WalletPanelFormWithdrawBitsharesEosConfirming extends Component<Props> {
   }
 }
 
-export default translate('transfer')(WalletPanelFormWithdrawBitsharesEosConfirming);
+export default translate('withdraw')(WalletPanelFormWithdrawBitsharesEosConfirming);

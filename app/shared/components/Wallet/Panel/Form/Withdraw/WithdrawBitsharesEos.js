@@ -111,7 +111,7 @@ class WalletPanelFormWithdrawBitsharesEos extends Component<Props> {
               <FormFieldMultiToken
                 balances={balances}
                 icon="x"
-                label={t('transfer_label_token_and_quantity')}
+                label={t('withdraw_label_token_and_quantity')}
                 loading={false}
                 maximum={balance[asset]}
                 name="quantity"
@@ -120,7 +120,7 @@ class WalletPanelFormWithdrawBitsharesEos extends Component<Props> {
                 value={quantity}
               />
               <p>
-                {`${balance[asset].toFixed(4)} ${asset} ${t('transfer_header_available')}`}
+                {`${balance[asset].toFixed(4)} ${asset} ${t('withdraw_header_available')}`}
               </p>
 
               <Divider />
@@ -142,4 +142,4 @@ class WalletPanelFormWithdrawBitsharesEos extends Component<Props> {
   }
 }
 
-export default translate('transfer')(WalletPanelFormWithdrawBitsharesEos);
+export default translate('withdraw')(WalletPanelFormWithdrawBitsharesEos);
