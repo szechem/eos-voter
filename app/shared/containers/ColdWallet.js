@@ -12,7 +12,6 @@ import About from '../components/About';
 import ColdWallet from '../components/ColdWallet/Wallet';
 import TabMenu from '../components/TabMenu';
 import Tools from './Tools';
-import ModalConstitution from '../components/Global/Modal/Constitution';
 
 import * as AccountsActions from '../actions/accounts';
 import * as SettingsActions from '../actions/settings';
@@ -130,11 +129,6 @@ class ColdWalletContainer extends Component<Props> {
             )
           }
         </Segment>
-        <ModalConstitution
-          actions={actions}
-          isUser={(keys.account)}
-          settings={settings}
-        />
       </React.Fragment>
     );
   }

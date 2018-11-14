@@ -48,14 +48,14 @@ export function createAccount(
         quantity: transferTokens
       }); */
       tr.newaccount({
-        creator: 'beos.gateway',
+        creator: currentAccount,
         name: accountName,
         owner: ownerKey,
         active: activeKey
       });
 
       tr.delegateram({
-        payer: 'beos.gateway',
+        payer: currentAccount,
         receiver: accountName,
         bytes: 10000
       });

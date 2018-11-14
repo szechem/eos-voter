@@ -54,7 +54,7 @@ class ToolsFormCreateBitsharesEosAccount extends Component<Props> {
     };
     const re = /^[a-z1-5.]+$/;
     if (name === 'accountName') {
-      if ((re.test(value) && (value.length < 13)) || (value === '')) {
+      if ((re.test(value) && (value.length === 12) && (value.substr(value.length - 1) !== '.')) || (value === '')) {
         newState.showAccountValidationError = false;
       } else {
         newState.showAccountValidationError = true;

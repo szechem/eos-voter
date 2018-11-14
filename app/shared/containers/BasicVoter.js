@@ -12,7 +12,6 @@ import Producers from '../components/Producers';
 import TabMenu from '../components/TabMenu';
 import Tools from './Tools';
 import Wallet from '../components/Wallet';
-import ModalConstitution from '../components/Global/Modal/Constitution';
 
 import * as AccountsActions from '../actions/accounts';
 import * as BlockExplorersActions from '../actions/blockexplorers';
@@ -166,11 +165,6 @@ class BasicVoterContainer extends Component<Props> {
         >
           {activeTab}
         </Segment>
-        <ModalConstitution
-          actions={actions}
-          isUser={(keys.account)}
-          settings={settings}
-        />
       </div>
     );
   }
