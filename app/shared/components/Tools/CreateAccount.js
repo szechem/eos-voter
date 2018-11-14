@@ -40,7 +40,7 @@ class ToolsCreateAccount extends Component<Props> {
             <Header>
               {t('tools_create_account_header')}
               <Header.Subheader>
-                {t('tools_create_account_text')}
+                {t('tools_create_beos_account_text')}
               </Header.Subheader>
             </Header>
             <GlobalTransactionHandler

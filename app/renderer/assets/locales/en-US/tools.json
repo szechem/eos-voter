@@ -27,6 +27,7 @@
   "tools_contacts_success_edit": "You have successfully updated your contact.",
   "tools_create_account_header": "Create Account",
   "tools_create_account_text": "Create an account on the BEOS network.",
+  "tools_create_beos_account_text": "Create an account on the BEOS network. In new account name you must have to add your current account name after dot.",
   "tools_customtokens_balance": "Balance",
   "tools_customtokens_contract": "Contract Account",
   "tools_customtokens_controls": "Controls",
