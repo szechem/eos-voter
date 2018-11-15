@@ -54,14 +54,14 @@ class ToolsGovernanceProposals extends Component<Props> {
         <Header>
           Referendum::Proposals (TEST)
           <Header.Subheader>
-            This feature is a preview release of the upcoming Referendum system being implemented into the EOS ecosystem.
+            This feature is a preview release of the upcoming Referendum system being implemented into the BEOS ecosystem.
           </Header.Subheader>
         </Header>
         <Message
           content={(
             <React.Fragment>
               <p>
-                The Referendum system is a smart contract that allows EOS stakeholders to directly be involved in the governance of the EOS blockchain. When a proposal is entered into the referendum contract, there will be a period of time where all accounts staking EOS will be allowed to vote in yes/no on the matters presented in a stake weighted system.
+                The Referendum system is a smart contract that allows BEOS stakeholders to directly be involved in the governance of the BEOS blockchain. When a proposal is entered into the referendum contract, there will be a period of time where all accounts staking BEOS will be allowed to vote in yes/no on the matters presented in a stake weighted system.
               </p>
               <p>
                 External links to learn more about this system will be integrated as the system evolves and as more official releases are made available.
