@@ -104,17 +104,6 @@ class WalletStatusActionsTableRow extends Component<Props> {
               >
                 <TimeAgo date={`${action.block_time}z`} />
               </Table.Cell>
-              <Table.Cell
-                width={3}
-              >
-                <ExplorerLink
-                  blockExplorers={blockExplorers}
-                  content={`${trx_id.substr(0, 4)}...${trx_id.substr(-4)}`}
-                  linkData={action.action_trace.trx_id}
-                  linkType="txid"
-                  settings={settings}
-                />
-              </Table.Cell>
             </React.Fragment>
           )
           : false

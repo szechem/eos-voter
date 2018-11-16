@@ -42,19 +42,6 @@ class Tools extends Component<Props> {
             />
           </Header>
           <Form>
-            {(settings.walletMode !== 'cold')
-              ? (
-                <Form.Field>
-                  <label>{t('tools_change_block_explorer2')}</label>
-                  <GlobalSettingsBlockExplorer
-                    actions={actions}
-                    blockExplorers={blockExplorers}
-                    defaultValue={settings.blockExplorer}
-                    selection
-                  />
-                </Form.Field>
-              ) : false
-            }
             <Form.Field>
               <label>{t('tools_change_language2')}</label>
               <GlobalSettingsLanguage
