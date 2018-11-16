@@ -50,14 +50,9 @@ export function createAccount(
       tr.newaccount({
         creator: currentAccount,
         name: accountName,
+        init_ram: 1,
         owner: ownerKey,
         active: activeKey
-      });
-
-      tr.delegateram({
-        payer: currentAccount,
-        receiver: accountName,
-        bytes: 10000
       });
     }, {
       broadcast: connection.broadcast,
