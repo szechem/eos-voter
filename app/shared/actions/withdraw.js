@@ -3,7 +3,7 @@ import * as types from './types';
 import eos from './helpers/eos';
 import { getCurrencyBalance } from './accounts';
 
-export function withdraw(owner, quantity) {
+export function withdraw(owner, bitsharesAccount, quantity) {
   return (dispatch: () => void, getState) => {
     const {
       connection
@@ -15,7 +15,9 @@ export function withdraw(owner, quantity) {
       return eos(connection, true).transaction('beos.gateway', contract => {
         contract.withdraw(
           owner,
+          bitsharesAccount,
           quantity,
+          ''
         );
       }, {
         broadcast: connection.broadcast,

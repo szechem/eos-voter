@@ -4,6 +4,7 @@ import { Button, Divider, Form, Icon, Segment } from 'semantic-ui-react';
 import { translate } from 'react-i18next';
 
 import FormFieldMultiToken from '../../../../Global/Form/Field/MultiToken';
+import GlobalFormFieldAccount from '../../../../Global/Form/Field/Account';
 import WalletPanelFormWithdrawBitsharesEosConfirming from './ConfirmingBitsharesEos';
 
 class WalletPanelFormWithdrawBitsharesEos extends Component<Props> {
@@ -11,9 +12,14 @@ class WalletPanelFormWithdrawBitsharesEos extends Component<Props> {
     super(props);
     this.state = {
       asset: 'PXBTS',
+      bitsharesAccount: '',
+      bitsharesAccountValidationError: false,
       confirming: false,
+      isBitsharesAccount: false,
+      isValidatingBitsharesAccount: false,
       owner: props.settings.account,
       quantity: '',
+      quantityDisabled: true,
       submitDisabled: true,
       waiting: false,
       waitingStarted: 0
@@ -23,10 +29,11 @@ class WalletPanelFormWithdrawBitsharesEos extends Component<Props> {
   onConfirm = () => {
     const {
       owner,
+      bitsharesAccount,
       quantity
     } = this.state;
     this.setState({ confirming: false }, () => {
-      this.props.actions.withdraw(owner, quantity);
+      this.props.actions.withdraw(owner, bitsharesAccount, quantity);
     });
   }
 
@@ -58,9 +65,57 @@ class WalletPanelFormWithdrawBitsharesEos extends Component<Props> {
   }
 
   onChange = (e, { name, value }) => {
+    if ((name === 'bitsharesAccount') && (value !== '')) {
+      if (this.state.bitsharesAccountValidationError === false) {
+        this.setState({
+          isBitsharesAccount: true,
+          isValidatingBitsharesAccount: true
+        });
+      }
+      this.bitsharesAccountValidation('https://api.blocktrades.us/api/v2', value);
+    }
     const newState = { [name]: value };
     newState.submitDisabled = false;
     this.setState(newState);
+    if (name === 'quantity') {
+      this.setState({
+        quantityDisabled: false
+      });
+    }
+  }
+
+  bitsharesAccountValidation = (url, account) => {
+    const validationUrl = `${url}/wallets/bitshares2/address-validator?address=${account}`;
+    const validationPromise = fetch(validationUrl, {
+      method: 'get',
+      headers: new Headers({ Accept: 'application/json' })
+    }).then(response => response.json());
+    validationPromise
+      .then(result => {
+        setTimeout(() => {
+          this.setState({
+            bitsharesAccountValidationError: false,
+            isValidatingBitsharesAccount: false
+          });
+          if (result.isValid) {
+            this.setState({
+              isBitsharesAccount: true
+            });
+          } else {
+            this.setState({
+              isBitsharesAccount: false
+            });
+          }
+        }, 300);
+        return null;
+      }).catch(() => {
+        this.setState({
+          bitsharesAccountValidationError: true,
+          isValidatingBitsharesAccount: false,
+          isBitsharesAccount: true
+        });
+        return null;
+      });
   }
 
   onBack = () => {
@@ -79,13 +134,46 @@ class WalletPanelFormWithdrawBitsharesEos extends Component<Props> {
     } = this.props;
     const {
       asset,
+      bitsharesAccount,
+      bitsharesAccountValidationError,
       confirming,
+      isBitsharesAccount,
+      isValidatingBitsharesAccount,
       owner,
       quantity,
-      submitDisabled,
+      quantityDisabled,
       waiting,
       waitingStarted
     } = this.state;
+
+    let {
+      submitDisabled
+    } = this.state;
+
+    let invalidBitsharesAccount = null;
+    let invalidBitsharesAccountValidation = null;
+    let bitsharesAccountValidation = null;
+
+    if ((bitsharesAccount === '')
+        || (isBitsharesAccount === false)
+        || (quantityDisabled === true)
+        || (isValidatingBitsharesAccount === true)) {
+      submitDisabled = true;
+    }
+
+    if (bitsharesAccount !== '') {
+      if ((isBitsharesAccount === false) && (bitsharesAccountValidationError === false)) {
+        invalidBitsharesAccount = <p className="beos-validation-error">{`${t('withdraw_invalid_account')}`}</p>;
+      }
+
+      if (bitsharesAccountValidationError === true) {
+        invalidBitsharesAccountValidation = <p className="beos-validation-error">{`${t('withdraw_account_validation_error')}`}</p>;
+      }
+
+      if (isValidatingBitsharesAccount === true) {
+        bitsharesAccountValidation = <p className="beos-validation-error">{`${t('withdraw_bitshares_account_validation')}`}</p>;
+      }
+    }
 
     const balance = balances[settings.account];
 
@@ -99,6 +187,7 @@ class WalletPanelFormWithdrawBitsharesEos extends Component<Props> {
             <WalletPanelFormWithdrawBitsharesEosConfirming
               asset={asset}
               balances={balances}
+              bitsharesAccount={bitsharesAccount}
               owner={owner}
               onBack={this.onBack}
               onConfirm={this.onConfirm}
@@ -108,6 +197,17 @@ class WalletPanelFormWithdrawBitsharesEos extends Component<Props> {
             />
           ) : (
             <Segment basic clearing>
+              <GlobalFormFieldAccount
+                autoFocus
+                fluid
+                label={t('withdraw_label_bitshares_account')}
+                name="bitsharesAccount"
+                onChange={this.onChange}
+                value={bitsharesAccount}
+              />
+              {bitsharesAccountValidation}
+              {invalidBitsharesAccount}
+              {invalidBitsharesAccountValidation}
               <FormFieldMultiToken
                 balances={balances}
                 icon="x"

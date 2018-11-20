@@ -17,6 +17,7 @@ class WalletPanelFormWithdrawBitsharesEosConfirming extends Component<Props> {
   render() {
     const {
       balances,
+      bitsharesAccount,
       owner,
       onBack,
       quantity,
@@ -37,12 +38,19 @@ class WalletPanelFormWithdrawBitsharesEosConfirming extends Component<Props> {
           <Header.Subheader>
             {t('withdraw_confirming_body_quantity')}
           </Header.Subheader>
+          <Header.Subheader className="beos-validation-error">
+            <p className="beos-validation-error">{`${t('withdraw_confirming_bitshares_network_fee')}`}</p>
+          </Header.Subheader>
         </Header>
         <Table compact definition striped>
           <Table.Body>
             <Table.Row>
               <Table.Cell width={4}>{t('withdraw_label_from')}</Table.Cell>
               <Table.Cell>{owner}</Table.Cell>
+            </Table.Row>
+            <Table.Row>
+              <Table.Cell>{t('withdraw_label_bitshares_account')}</Table.Cell>
+              <Table.Cell>{bitsharesAccount}</Table.Cell>
             </Table.Row>
             <Table.Row>
               <Table.Cell>{t('withdraw_label_quantity')}</Table.Cell>
