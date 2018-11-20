@@ -71,11 +71,6 @@ const paneMapping = [
     name: 'customtokens',
   },
   {
-    element: ToolsDelegations,
-    modes: ['hot', 'watch', 'skip'],
-    name: 'delegations'
-  },
-  {
     element: ToolsWallets,
     modes: ['cold', 'hot', 'watch'],
     name: 'wallets',
