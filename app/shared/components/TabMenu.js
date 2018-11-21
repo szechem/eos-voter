@@ -1,10 +1,10 @@
 // @flow
 import React, { Component } from 'react';
-import { Menu } from 'semantic-ui-react';
+import { Label,Menu } from 'semantic-ui-react';
 import { translate } from 'react-i18next';
 
 import GlobalAccountDropdown from '../containers/Global/Account/Dropdown';
-import WalletLanguage from './Wallet/Language';
+import GlobalHardwareLedgerStatus from '../containers/Global/Hardware/Ledger/Status';
 import WalletLockState from './Wallet/LockState';
 import WalletMode from './Wallet/Mode';
 import logo from '../../renderer/assets/images/greymass.png';
@@ -14,6 +14,7 @@ class TabMenu extends Component<Props> {
     const {
       actions,
       activeItem,
+      connection,
       handleItemClick,
       locked,
       settings,
@@ -65,11 +66,18 @@ class TabMenu extends Component<Props> {
           : false
         }
         <Menu.Menu position="right">
-          <WalletLanguage
-            actions={actions}
-            key="language"
-            settings={settings}
-          />
+          {(connection && connection.chain)
+            ? (
+              <Menu.Item
+                name="blockchain"
+              >
+                <Label
+                  size="medium"
+                  color="grey"
+                  content={connection.chain || 'EOS Mainnet'}
+                />
+              </Menu.Item>
+            ) : ''}
           <WalletMode
             settings={settings}
           />
@@ -80,6 +88,7 @@ class TabMenu extends Component<Props> {
             validate={validate}
             wallet={wallet}
           />
+          <GlobalHardwareLedgerStatus />
           <Menu.Item
             name="about"
             position="right"

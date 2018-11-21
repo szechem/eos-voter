@@ -11,6 +11,7 @@ export function buyram(amount) {
     } = getState();
 
     dispatch({
+      payload: { connection },
       type: types.SYSTEM_BUYRAM_PENDING
     });
 
@@ -19,16 +20,22 @@ export function buyram(amount) {
     return eos(connection, true).buyram({
       payer: account,
       receiver: account,
-      quant: `${amount.toFixed(4)} EOS`
+      quant: `${amount.toFixed(4)} ${connection.chainSymbol || 'EOS'}`
     }).then((tx) => {
       setTimeout(dispatch(getAccount(account)), 500);
 
       return dispatch({
-        payload: { tx },
+        payload: {
+          connection,
+          tx
+        },
         type: types.SYSTEM_BUYRAM_SUCCESS
       });
     }).catch((err) => dispatch({
-      payload: { err },
+      payload: {
+        connection,
+        err
+      },
       type: types.SYSTEM_BUYRAM_FAILURE
     }));
   };

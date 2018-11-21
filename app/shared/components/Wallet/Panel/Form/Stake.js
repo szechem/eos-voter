@@ -11,6 +11,7 @@ import FormMessageError from '../../../Global/Form/Message/Error';
 
 import GlobalFormFieldAccount from '../../../Global/Form/Field/Account';
 import GlobalFormFieldToken from '../../../Global/Form/Field/Token';
+import StatsFetcher from '../../../../utils/StatsFetcher';
 
 type Props = {
   actions: {},
@@ -24,14 +25,18 @@ class WalletPanelFormStake extends Component<Props> {
 
   constructor(props) {
     super(props);
-    const { account } = props;
+    const { account, balance } = props;
     const {
       cpu_weight,
       net_weight
     } = account.self_delegated_bandwidth;
 
-    const parsedCpuWeight = cpu_weight.split(' ')[0];
-    const parsedNetWeight = net_weight.split(' ')[0];
+    const parsedCpuWeight = String(cpu_weight).split(' ')[0];
+    const parsedNetWeight = String(net_weight).split(' ')[0];
+
+    const statsFetcher = new StatsFetcher(account, balance);
+    const { totalBeingUnstaked } = statsFetcher.fetchAll();
+    // This is a temporary solution until I refactor everything to use the new EOS/Account class instead of StatsFetcher.
 
     this.state = {
       accountName: account.account_name,
@@ -41,11 +46,12 @@ class WalletPanelFormStake extends Component<Props> {
       cpuOriginal: Decimal(parsedCpuWeight),
       decimalCpuAmount: Decimal(parsedCpuWeight),
       decimalNetAmount: Decimal(parsedNetWeight),
-      EOSbalance: (props.balance && props.balance.BEOS) ? props.balance.BEOS : 0,
+      chainSymbolBalance: (props.balance && props.balance[props.connection.chainSymbol || 'BEOS']) ||  0,
       formError: null,
       netAmountValid: true,
       netOriginal: Decimal(parsedNetWeight),
-      submitDisabled: true
+      submitDisabled: true,
+      totalBeingUnstaked
     };
   }
 
@@ -145,9 +151,10 @@ class WalletPanelFormStake extends Component<Props> {
       cpuOriginal,
       decimalCpuAmount,
       decimalNetAmount,
-      EOSbalance,
+      chainSymbolBalance,
       netAmountValid,
-      netOriginal
+      netOriginal,
+      totalBeingUnstaked
     } = this.state;
 
     if (!accountNameValid) {
@@ -179,8 +186,10 @@ class WalletPanelFormStake extends Component<Props> {
     const cpuChange = decimalCpuAmount.minus(cpuOriginal);
     const netChange = decimalNetAmount.minus(netOriginal);
 
-    if (Decimal.max(0, cpuChange).plus(Decimal.max(0, netChange)).greaterThan(EOSbalance)) {
-      return 'not_enough_balance';
+    if (Decimal.max(0, cpuChange)
+      .plus(Decimal.max(0, netChange))
+      .greaterThan(Decimal(chainSymbolBalance).plus(totalBeingUnstaked))) {
+      return 'insufficient_balance';
     }
 
     return false;
@@ -218,6 +227,7 @@ class WalletPanelFormStake extends Component<Props> {
     const {
       account,
       balance,
+      connection,
       onClose,
       system,
       settings,
@@ -226,6 +236,7 @@ class WalletPanelFormStake extends Component<Props> {
 
     const {
       accountName,
+      chainSymbolBalance,
       cpuOriginal,
       decimalCpuAmount,
       decimalNetAmount,
@@ -246,7 +257,6 @@ class WalletPanelFormStake extends Component<Props> {
         system.ACCOUNT_EXISTS_LAST_ACCOUNT === accountName) {
       formError = formError || 'account_does_not_exist';
     }
-
     return (
       <Segment
         loading={system.STAKE === 'PENDING'}
@@ -263,8 +273,9 @@ class WalletPanelFormStake extends Component<Props> {
                   </Header>
                 ) : ''}
               <WalletPanelFormStakeStats
+                connection={connection}
                 cpuOriginal={cpuOriginal}
-                EOSbalance={EOSbalance}
+                chainSymbolBalance={chainSymbolBalance}
                 netOriginal={netOriginal}
               />
               <Form
@@ -286,7 +297,7 @@ class WalletPanelFormStake extends Component<Props> {
                   <GlobalFormFieldToken
                     autoFocus
                     icon="microchip"
-                    label={t('update_staked_cpu_amount')}
+                    label={t('update_staked_cpu_amount_label', { chainSymbol: connection.chainSymbol })}
                     name="cpuAmount"
                     onChange={this.onChange}
                     defaultValue={decimalCpuAmount.toFixed(4)}
@@ -295,7 +306,7 @@ class WalletPanelFormStake extends Component<Props> {
                   <GlobalFormFieldToken
                     autoFocus
                     icon="wifi"
-                    label={t('update_staked_net_amount')}
+                    label={t('update_staked_net_amount_label', { chainSymbol: connection.chainSymbol })}
                     name="netAmount"
                     onChange={this.onChange}
                     defaultValue={decimalNetAmount.toFixed(4)}
@@ -303,12 +314,13 @@ class WalletPanelFormStake extends Component<Props> {
                 </Form.Group>
                 <FormMessageError
                   error={formError}
+                  chainSymbol={connection.chainSymbol}
                 />
                 <Divider />
                 <Message
                   icon="info circle"
                   info
-                  content={t('undelegate_explanation')}
+                  content={t('undelegate_explanation_message', { chainSymbol: connection.chainSymbol })}
                 />
                 <Divider />
                 <Button
@@ -333,9 +345,10 @@ class WalletPanelFormStake extends Component<Props> {
               account={account}
               accountName={accountName}
               balance={balance}
+              connection={connection}
               decimalCpuAmount={decimalCpuAmount}
               cpuOriginal={cpuOriginal}
-              EOSbalance={EOSbalance}
+              chainSymbolBalance={chainSymbolBalance}
               decimalNetAmount={decimalNetAmount}
               netOriginal={netOriginal}
               onBack={this.onBack}

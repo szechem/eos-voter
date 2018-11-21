@@ -13,7 +13,8 @@ export function getCustomTokens(previous = false) {
     });
     const { connection } = getState();
     // Don't retrieve if we're not on mainnet
-    if (connection.chain !== 'eos-mainnet') {
+    if (!connection.supportedContracts ||
+        !connection.supportedContracts.includes('customtokens')) {
       return dispatch({
         type: types.SYSTEM_CUSTOMTOKENS_FAILURE
       });
@@ -46,7 +47,7 @@ export function getCustomTokens(previous = false) {
         .map((token) => {
           const [value, symbol] = token.customasset.split(' ');
           const [, suffix] = value.split('.');
-          const precision = suffix.length;
+          const precision = (suffix) ? suffix.length : 0;
           const contract = token.customtoken;
           return {
             contract,

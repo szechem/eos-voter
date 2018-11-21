@@ -27,7 +27,7 @@ class ToolsFormPermissionsAuth extends Component<Props> {
     super(props);
     let { auth } = props;
     const newAuth = !(auth);
-    if (!auth) {
+    if (!auth || auth.required_auth.keys.length === 0) {
       auth = Object.assign({}, defaultAuth);
     }
     this.state = Object.assign({}, {
@@ -44,6 +44,14 @@ class ToolsFormPermissionsAuth extends Component<Props> {
       validForm: false
     });
   }
+  componentWillMount() {
+    if (this.props.defaultValue) {
+      this.setState({
+        auth: set(this.state.auth, 'keys.0.key', this.props.defaultValue),
+      });
+    }
+    this.validateFields();
+  }
   addKey = () => this.setState({
     auth: set(this.state.auth, `keys.${this.state.auth.keys.length}`, { key: '', weight: 1 }),
     validFields: Object.assign({}, this.state.validFields, {
@@ -55,11 +63,14 @@ class ToolsFormPermissionsAuth extends Component<Props> {
       auth: set(this.state.auth, name, value),
       validFields: Object.assign({}, this.state.validFields, { [name]: valid })
     }, () => {
-      const { validFields } = this.state;
-      const eachFieldValid = values(validFields);
-      this.setState({
-        validForm: eachFieldValid.every((isValid) => isValid === true)
-      });
+      this.validateFields();
+    });
+  }
+  validateFields = () => {
+    const { validFields } = this.state;
+    const eachFieldValid = values(validFields);
+    this.setState({
+      validForm: eachFieldValid.every((isValid) => isValid === true)
     });
   }
   onStringChange = (e, { name, value }) => {
@@ -85,7 +96,7 @@ class ToolsFormPermissionsAuth extends Component<Props> {
       settings
     } = this.props;
     const { auth, parent, permission } = this.state;
-    let authorization;
+    let authorization = `${settings.account}@${settings.authorization}`;
     if (permission === 'owner') {
       authorization = `${settings.account}@owner`;
     }
@@ -93,8 +104,11 @@ class ToolsFormPermissionsAuth extends Component<Props> {
   }
   render() {
     const {
+      connection,
+      defaultValue,
       pubkey,
       settings,
+      system,
       t
     } = this.props;
     const {
@@ -105,9 +119,11 @@ class ToolsFormPermissionsAuth extends Component<Props> {
       permission,
       validForm
     } = this.state;
+    const isPending = !!(system.UPDATEAUTH === 'PENDING');
     const isCurrentKey = map(original.keys, 'key').includes(pubkey);
     return (
       <Form
+        loading={isPending}
         onSubmit={this.onSubmit}
       >
         <p>{t('tools_form_permissions_auth_instructions')}</p>
@@ -147,6 +163,8 @@ class ToolsFormPermissionsAuth extends Component<Props> {
         {auth.keys.map((keyAuths, index) => (
           <ToolsFormPermissionsAuthWeightedKey
             auth={auth}
+            connection={connection}
+            defaultValue={defaultValue}
             key={JSON.stringify(keyAuths)}
             keyAuths={keyAuths}
             index={index}
@@ -161,8 +179,9 @@ class ToolsFormPermissionsAuth extends Component<Props> {
             <Button
               content={t('tools_form_permissions_auth_add_key')}
               color="green"
-              icon="circle plus"
               floated="right"
+              icon="circle plus"
+              loading={isPending}
               onClick={this.addKey}
             />
           )

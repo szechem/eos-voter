@@ -3,8 +3,10 @@ import React, { Component } from 'react';
 import { translate } from 'react-i18next';
 import { find } from 'lodash';
 
+import TimeAgo from 'react-timeago';
 import { Button, Header, Message, Segment } from 'semantic-ui-react';
 
+import GlobalModalDangerLink from '../../../Global/Modal/DangerLink';
 import ToolsGovernanceProposalsProposalVote from './Proposal/Vote';
 
 class ToolsGovernanceProposalsProposal extends Component<Props> {
@@ -34,6 +36,7 @@ class ToolsGovernanceProposalsProposal extends Component<Props> {
     const {
       actions,
       blockExplorers,
+      isLocked,
       settings,
       proposal,
       system,
@@ -41,6 +44,8 @@ class ToolsGovernanceProposalsProposal extends Component<Props> {
       votes
     } = this.props;
     const {
+      created_at,
+      expires_at,
       json,
       proposal_name,
       title
@@ -52,6 +57,10 @@ class ToolsGovernanceProposalsProposal extends Component<Props> {
     const isVotePending = !!(system.GOVERNANCE_VOTE_PROPOSAL === 'PENDING' || system.GOVERNANCE_UNVOTE_PROPOSAL === 'PENDING')
     const isSupporting = (voted && approved);
     const isAgainst = (voted && !approved);
+    const isExpired = (new Date().getTime() > Date.parse(expires_at));
+    if (isExpired) {
+      return false;
+    }
     return (
       <React.Fragment>
         <Header
@@ -63,7 +72,8 @@ class ToolsGovernanceProposalsProposal extends Component<Props> {
         >
           {title}
           <Header.Subheader>
-            ID: {proposal_name}
+            ID: {proposal_name} / Expires: <TimeAgo date={`${expires_at}z`} />
+
           </Header.Subheader>
         </Header>
         <Segment attached>
@@ -90,7 +100,15 @@ class ToolsGovernanceProposalsProposal extends Component<Props> {
             : false
           }
           <p>
-            For more information on this proposal, please visit (not available yet)
+            To view the full details of this proposal, please view it on an external block explorer:
+          </p>
+          <p>
+            <GlobalModalDangerLink
+              content={`https://bloks.io/vote/referendums/${proposal_name}`}
+              link={`https://bloks.io/vote/referendums/${proposal_name}`}
+              settings={settings}
+            />
+
           </p>
           <p>
             If you would like to modify your vote, use the buttons below.
@@ -102,12 +120,12 @@ class ToolsGovernanceProposalsProposal extends Component<Props> {
             button={{
               color: 'grey',
               content: t('yes'),
-              disabled: isSupporting,
+              disabled: isLocked || isSupporting,
               icon: 'checkmark'
             }}
             confirm={(
               <Button
-                color={(isSupporting) ? 'green' : 'grey'}
+                color="blue"
                 content={t('confirm')}
                 floated="right"
                 icon="checkmark"
@@ -115,6 +133,7 @@ class ToolsGovernanceProposalsProposal extends Component<Props> {
                 onClick={() => this.approve(proposal_name)}
               />
             )}
+            content={t('tools_governance_proposal_confirm_vote_yes')}
             settings={settings}
             system={system}
           />
@@ -125,20 +144,21 @@ class ToolsGovernanceProposalsProposal extends Component<Props> {
             button={{
               color: 'grey',
               content: t('no'),
-              disabled: isAgainst,
+              disabled: isLocked || isAgainst,
               icon: 'x'
             }}
             confirm={(
               <Button
-                color={(isAgainst) ? 'orange' : 'grey'}
+                color="blue"
                 content={t('confirm')}
-                disabled={isAgainst}
+                disabled={isLocked || isAgainst}
                 floated="right"
                 icon="checkmark"
                 loading={isVotePending}
                 onClick={() => this.oppose(proposal_name)}
               />
             )}
+            content={t('tools_governance_proposal_confirm_vote_no')}
             settings={settings}
             system={system}
           />
@@ -149,20 +169,21 @@ class ToolsGovernanceProposalsProposal extends Component<Props> {
             button={{
               color: 'grey',
               content: t('unvote'),
-              disabled: !voted,
+              disabled: isLocked || !voted,
               icon: 'trash'
             }}
             confirm={(
               <Button
-                color="grey"
+                color="blue"
                 content={t('confirm')}
-                disabled={(!voted)}
+                disabled={(isLocked || !voted)}
                 floated="right"
                 icon="checkmark"
                 loading={isVotePending}
                 onClick={() => this.unvote(proposal_name)}
               />
             )}
+            content={t('tools_governance_proposal_confirm_unvote')}
             settings={settings}
             system={system}
           />

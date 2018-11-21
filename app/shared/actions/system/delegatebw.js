@@ -9,33 +9,44 @@ export function delegatebw(delegator, receiver, netAmount, cpuAmount) {
     } = getState();
 
     dispatch({
+      payload: { connection },
       type: types.SYSTEM_DELEGATEBW_PENDING
     });
 
     return eos(connection, true).transaction(tr => {
-      tr.delegatebw(delegatebwParams(delegator, receiver, netAmount, cpuAmount));
+      tr.delegatebw(delegatebwParams(connection.chainSymbol || 'EOS', delegator, receiver, netAmount, cpuAmount));
+    }, {
+      broadcast: connection.broadcast,
+      expireInSeconds: connection.expireInSeconds,
+      sign: connection.sign
     }).then((tx) => {
       dispatch(AccountActions.getAccount(delegator));
       return dispatch({
-        payload: { tx },
+        payload: {
+          connection,
+          tx
+        },
         type: types.SYSTEM_DELEGATEBW_SUCCESS
       });
     }).catch((err) => dispatch({
-      payload: { err },
+      payload: {
+        connection,
+        err
+      },
       type: types.SYSTEM_DELEGATEBW_FAILURE
     }));
   };
 }
 
-export function delegatebwParams(delegator, receiver, netAmount, cpuAmount, transferTokens) {
+export function delegatebwParams(chainSymbol, delegator, receiver, netAmount, cpuAmount, transferTokens) {
   const stakeNetAmount = parseFloat(netAmount) || 0;
   const stakeCpuAmount = parseFloat(cpuAmount) || 0;
 
   return {
     from: delegator,
     receiver,
-    stake_net_quantity: `${stakeNetAmount.toFixed(4)} EOS`,
-    stake_cpu_quantity: `${stakeCpuAmount.toFixed(4)} EOS`,
+    stake_net_quantity: `${stakeNetAmount.toFixed(4)} ${chainSymbol}`,
+    stake_cpu_quantity: `${stakeCpuAmount.toFixed(4)} ${chainSymbol}`,
     transfer: transferTokens ? 1 : 0
   };
 }

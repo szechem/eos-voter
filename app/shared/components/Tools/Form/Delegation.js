@@ -33,10 +33,10 @@ class ToolsFormDelegation extends Component<Props> {
 
       this.setState({
         accountName,
-        cpuAmount: Decimal(cpu_weight.split(' ')[0]),
-        cpuOriginal: Decimal(cpu_weight.split(' ')[0]),
-        netAmount: Decimal(net_weight.split(' ')[0]),
-        netOriginal: Decimal(net_weight.split(' ')[0])
+        cpuAmount: Decimal(String(cpu_weight).split(' ')[0]),
+        cpuOriginal: Decimal(String(cpu_weight).split(' ')[0]),
+        netAmount: Decimal(String(net_weight).split(' ')[0]),
+        netOriginal: Decimal(String(net_weight).split(' ')[0])
       });
     } else if (delegationToRemove) {
       const {
@@ -49,9 +49,9 @@ class ToolsFormDelegation extends Component<Props> {
         accountName,
         confirming: true,
         cpuAmount: Decimal(0),
-        cpuOriginal: Decimal(cpu_weight.split(' ')[0]),
+        cpuOriginal: Decimal(String(cpu_weight).split(' ')[0]),
         netAmount: Decimal(0),
-        netOriginal: Decimal(net_weight.split(' ')[0])
+        netOriginal: Decimal(String(net_weight).split(' ')[0])
       });
     }
   }
@@ -61,6 +61,7 @@ class ToolsFormDelegation extends Component<Props> {
       account,
       actions,
       balance,
+      connection,
       keys,
       onClose,
       settings,
@@ -78,7 +79,7 @@ class ToolsFormDelegation extends Component<Props> {
       netOriginal
     } = this.state;
 
-    return ((keys && keys.key) || settings.walletMode === 'watch')
+    return ((keys && keys.key) || ['watch', 'ledger'].includes(settings.walletMode))
       ? (
         <WalletPanelFormStake
           account={account}
@@ -86,6 +87,7 @@ class ToolsFormDelegation extends Component<Props> {
           actions={actions}
           balance={balance}
           confirming={confirming}
+          connection={connection}
           cpuAmount={cpuAmount}
           cpuOriginal={cpuOriginal}
           netAmount={netAmount}

@@ -10,15 +10,21 @@ import { Segment } from 'semantic-ui-react';
 import About from '../components/About';
 import Producers from '../components/Producers';
 import TabMenu from '../components/TabMenu';
+import Test from './Test';
 import Tools from './Tools';
 import Wallet from '../components/Wallet';
+import Notifications from '../components/Notifications';
+import ModalConstitution from '../components/Global/Modal/Constitution';
 
 import * as AccountsActions from '../actions/accounts';
+import * as AppActions from '../actions/app';
 import * as BlockExplorersActions from '../actions/blockexplorers';
 import * as BuyRamBytesActions from '../actions/system/buyrambytes';
 import * as BuyRamActions from '../actions/system/buyram';
-import * as CreateAccountActions from '../actions/createaccount';
 import * as ChainActions from '../actions/chain';
+import * as ConnectionActions from '../actions/connection';
+import * as ContractsActions from '../actions/contracts';
+import * as CreateAccountActions from '../actions/createaccount';
 import * as GlobalsActions from '../actions/globals';
 import * as ProducersActions from '../actions/producers';
 import * as SellRamActions from '../actions/system/sellram';
@@ -102,6 +108,7 @@ class BasicVoterContainer extends Component<Props> {
     } = this.props;
     const {
       getAccount,
+      getConstants,
       getGlobals,
       getInfo
     } = actions;
@@ -110,6 +117,7 @@ class BasicVoterContainer extends Component<Props> {
       if (settings.account) {
         getAccount(settings.account);
       }
+      getConstants();
       getGlobals();
       getInfo();
     }
@@ -123,6 +131,8 @@ class BasicVoterContainer extends Component<Props> {
     } = this.state;
     const {
       actions,
+      app,
+      connection,
       keys,
       settings,
       validate,
@@ -139,6 +149,10 @@ class BasicVoterContainer extends Component<Props> {
         activeTab = <About {...this.props} />;
         break;
       }
+      case 'test': {
+        activeTab = <Test />;
+        break;
+      }
       case 'tools': {
         activeTab = <Tools {...this.props} />;
         break;
@@ -152,10 +166,17 @@ class BasicVoterContainer extends Component<Props> {
         <TabMenu
           actions={actions}
           activeItem={activeItem}
+          connection={connection}
           handleItemClick={this.handleItemClick}
           locked={(!keys.key)}
           settings={settings}
           validate={validate}
+          wallet={wallet}
+        />
+        <Notifications
+          actions={actions}
+          app={app}
+          settings={settings}
           wallet={wallet}
         />
         <Segment
@@ -173,13 +194,16 @@ class BasicVoterContainer extends Component<Props> {
 function mapStateToProps(state) {
   return {
     accounts: state.accounts,
+    app: state.app,
     actionHistories: state.actions,
     balances: state.balances,
-    blockExplorers: state.blockexplorers,
+    allBlockExplorers: state.blockexplorers,
     chain: state.chain,
     connection: state.connection,
+    contracts: state.contracts,
     globals: state.globals,
     keys: state.keys,
+    ledger: state.ledger,
     producers: state.producers,
     settings: state.settings,
     system: state.system,
@@ -194,10 +218,13 @@ function mapDispatchToProps(dispatch) {
   return {
     actions: bindActionCreators({
       ...AccountsActions,
+      ...AppActions,
       ...BlockExplorersActions,
       ...BuyRamActions,
       ...BuyRamBytesActions,
       ...ChainActions,
+      ...ConnectionActions,
+      ...ContractsActions,
       ...CreateAccountActions,
       ...GlobalsActions,
       ...ProducersActions,

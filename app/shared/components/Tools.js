@@ -15,7 +15,8 @@ class Tools extends Component<Props> {
   render() {
     const {
       actions,
-      blockExplorers,
+      allBlockExplorers,
+      connection,
       i18n,
       settings,
       t
@@ -42,6 +43,19 @@ class Tools extends Component<Props> {
             />
           </Header>
           <Form>
+            {(settings.walletMode !== 'cold')
+              ? (
+                <Form.Field>
+                  <label>{t('tools_change_block_explorer2')}</label>
+                  <GlobalSettingsBlockExplorer
+                    actions={actions}
+                    blockExplorers={allBlockExplorers[connection.chainKey]}
+                    defaultValue={settings.blockExplorer}
+                    selection
+                  />
+                </Form.Field>
+              ) : false
+            }
             <Form.Field>
               <label>{t('tools_change_language2')}</label>
               <GlobalSettingsLanguage
@@ -76,7 +90,7 @@ class Tools extends Component<Props> {
               />
             </Form.Field>
             <Form.Field>
-              <label>{t('tools_change_spam_transfer_filter')}</label>
+              <label>{t('tools_change_transfer_spam_filter')}</label>
               <GlobalSettingsFilterSpamTransfers
                 actions={actions}
                 defaultValue={settings.filterSpamTransfersUnder}

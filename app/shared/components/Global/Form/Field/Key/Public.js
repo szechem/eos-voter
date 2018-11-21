@@ -17,6 +17,7 @@ class GlobalFormFieldKeyPublic extends Component<Props> {
   }
   generate = (e) => {
     const {
+      connection,
       name,
       setPrivateKey
     } = this.props;
@@ -24,7 +25,7 @@ class GlobalFormFieldKeyPublic extends Component<Props> {
     ecc
       .randomKey()
       .then((key) => {
-        const publicKey = ecc.privateToPublic(key);
+        const publicKey = ecc.privateToPublic(key, connection.keyPrefix);
         // Set the value in the parent form with the provided name
         this.onChange(null, {
           name,
@@ -46,8 +47,10 @@ class GlobalFormFieldKeyPublic extends Component<Props> {
     return false;
   }
   onChange = debounce((e, { name, value }) => {
+    const { connection } = this.props;
     const parsed = value.trim();
-    const valid = ecc.isValidPublic(parsed);
+    const valid = ecc.isValidPublic(parsed, connection.keyPrefix);
+
     this.setState({
       value: parsed
     }, () => {

@@ -6,21 +6,19 @@ import { forEach } from 'lodash';
 import TimeAgo from 'react-timeago';
 
 import GlobalDataBytes from '../../Global/Data/Bytes';
+import ClaimUnstakedButton from './Button/ClaimUnstaked';
 
 class WalletStatusBalances extends Component<Props> {
-  claimUnstaked = () => {
-    const {
-      actions,
-      settings
-    } = this.props;
-    actions.claimUnstaked(settings.account);
-  }
   render() {
     const {
       account,
+      actions,
       balances,
+      blockExplorers,
+      connection,
       settings,
       statsFetcher,
+      system,
       t
     } = this.props;
 
@@ -33,14 +31,14 @@ class WalletStatusBalances extends Component<Props> {
       totalTokens
     } = statsFetcher.fetchAll();
     const contracts = balances.__contracts;
-    const claimable = (new Date() > refundDate);
+    const claimable = (new Date(new Date().toUTCString()) > refundDate);
     const watchedTokens = (settings.customTokens) ? settings.customTokens.map((token) => token.split(':')[1]) : [];
     const rows = [
       (
-        <Table.Row key="EOS">
+        <Table.Row key="ChainSymbol">
           <Table.Cell width={2}>
             <Header>
-              BEOS
+              {connection.chainSymbol}
               <Header.Subheader>
                 eosio.token
               </Header.Subheader>
@@ -51,15 +49,19 @@ class WalletStatusBalances extends Component<Props> {
               <Table.Body>
                 <Table.Row>
                   <Table.Cell width={4}>{t('wallet_status_liquid')}</Table.Cell>
-                  <Table.Cell>{(tokens.BEOS) ? tokens.BEOS.toFixed(4) : '0.0000'} BEOS</Table.Cell>
+                  <Table.Cell>
+                    {(tokens[connection.chainSymbol]) ? tokens[connection.chainSymbol].toFixed(4) : '0.0000'}
+                    &nbsp;
+                    {connection.chainSymbol}
+                  </Table.Cell>
                 </Table.Row>
                 <Table.Row>
                   <Table.Cell>{t('wallet_status_balances_staked_to_self')}</Table.Cell>
-                  <Table.Cell>{totalStakedToSelf.toFixed(4)} BEOS </Table.Cell>
+                  <Table.Cell>{totalStakedToSelf.toFixed(4)} {connection.chainSymbol} </Table.Cell>
                 </Table.Row>
                 <Table.Row>
                   <Table.Cell>{t('wallet_status_balances_staked_to_others')}</Table.Cell>
-                  <Table.Cell>{totalStakedToOthers.toFixed(4)} BEOS </Table.Cell>
+                  <Table.Cell>{totalStakedToOthers.toFixed(4)} {connection.chainSymbol} </Table.Cell>
                 </Table.Row>
                 {(refundDate)
                   ? (
@@ -68,17 +70,18 @@ class WalletStatusBalances extends Component<Props> {
                       <Table.Cell>
                         {(claimable)
                           ? (
-                            <Button
-                              color="blue"
-                              content={t('wallet_status_resources_claim_unstaked')}
-                              floated="right"
-                              onClick={this.claimUnstaked}
-                              size="small"
+                            <ClaimUnstakedButton
+                              actions={actions}
+                              blockExplorers={blockExplorers}
+                              connection={connection}
+                              settings={settings}
+                              system={system}
+                              totalBeingUnstaked={totalBeingUnstaked}
                             />
                           )
                           : false
                         }
-                        {totalBeingUnstaked.toFixed(4)} BEOS (<TimeAgo date={refundDate} />)
+                        {totalBeingUnstaked.toFixed(4)} {connection.chainSymbol} (<TimeAgo date={`${refundDate}z`} />)
                       </Table.Cell>
                     </Table.Row>
                   )
@@ -86,7 +89,7 @@ class WalletStatusBalances extends Component<Props> {
                 }
                 <Table.Row>
                   <Table.Cell>{t('wallet_status_total_balance')}</Table.Cell>
-                  <Table.Cell>{totalTokens.toFixed(4)} BEOS</Table.Cell>
+                  <Table.Cell>{totalTokens.toFixed(4)} {connection.chainSymbol}</Table.Cell>
                 </Table.Row>
                 <Table.Row>
                   <Table.Cell>{t('wallet_status_ram_amount')}</Table.Cell>
@@ -105,7 +108,7 @@ class WalletStatusBalances extends Component<Props> {
     ];
     // Add rows for remaining tokens
     forEach(tokens, (amount, token) => {
-      if (token === 'BEOS' || watchedTokens.indexOf(token) === -1) return;
+      if (token === connection.chainSymbol || watchedTokens.indexOf(token) === -1) return;
       let contract = 'unknown';
       let precision = {
         [token]: 4
@@ -129,31 +132,36 @@ class WalletStatusBalances extends Component<Props> {
         </Table.Row>
       ));
     });
+    const supportsCustomTokens = connection.supportedContracts &&
+                                 connection.supportedContracts.includes('customtokens');
     return (
       <Segment vertical basic loading={!tokens}>
         <Header>
-          <Popup
-            content={(
-              <Header size="small">
-                <Icon name="info circle" />
-                <Header.Content>
-                  {t('wallet_status_add_custom_token_header')}
-                  <Header.Subheader>
-                    {t('wallet_status_add_custom_token_action_subheader')}
-                  </Header.Subheader>
-                </Header.Content>
-              </Header>
-            )}
-            inverted
-            trigger={(
-              <Button
-                color="blue"
-                content={t('wallet_status_add_custom_token_action')}
-                floated="right"
-                size="small"
+          {(supportsCustomTokens)
+            && (
+              <Popup
+                content={(
+                  <Header size="small">
+                    <Icon name="info circle" />
+                    <Header.Content>
+                      {t('wallet_status_add_custom_token_header')}
+                      <Header.Subheader>
+                        {t('wallet_status_add_custom_token_action_subheader')}
+                      </Header.Subheader>
+                    </Header.Content>
+                  </Header>
+                )}
+                inverted
+                trigger={(
+                  <Button
+                    color="blue"
+                    content={t('wallet_status_add_custom_token_action')}
+                    floated="right"
+                    size="small"
+                  />
+                )}
               />
             )}
-          />
           {t('wallet_status_add_custom_token_header')}
           <Header.Subheader>
             {t('wallet_status_add_custom_token_subheader')}

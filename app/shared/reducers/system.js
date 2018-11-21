@@ -18,15 +18,19 @@ export default function system(state = {}, action) {
   const [, requestName, requestState] = matches;
 
   const accountField = `${requestName}_LAST_ACCOUNT`;
+  const nameBidField = `${requestName}_LAST_BID`;
   const contractField = `${requestName}_LAST_CONTRACT`;
   const errField = `${requestName}_LAST_ERROR`;
   const txField = `${requestName}_LAST_TRANSACTION`;
+  const awaitingDeviceField = `${requestName}_AWAITING_DEVICE`;
+
+  const contractHashField = `${requestName}_LAST_CONTRACT_HASH`;
 
   const newState = {
     ...state,
     [requestName]: requestState,
-    errField: '',
-    txField: ''
+    errField: undefined,
+    txField: undefined
   };
 
   if (action.payload) {
@@ -34,12 +38,22 @@ export default function system(state = {}, action) {
     if (action.payload.account_name) {
       newState[accountField] = action.payload.account_name;
     }
+    // Attach the namebid associated to request when given
+    if (action.payload.namebid) {
+      newState[nameBidField] = action.payload.namebid;
+    }
     // Attempt to process any errors returned
     if (action.payload.err) {
       try {
         newState[errField] = JSON.parse(action.payload.err);
       } catch (e) {
         newState[errField] = action.payload.err;
+      }
+    }
+    if (action.payload.connection) {
+      const { connection } = action.payload;
+      if (connection.signMethod === 'ledger') {
+        newState[awaitingDeviceField] = (requestState === 'PENDING');
       }
     }
     // Attach any returned transactions
@@ -51,7 +65,16 @@ export default function system(state = {}, action) {
       const { abi, account_name } = action.payload.contract;
       newState[contractField] = new EOSContract(abi, account_name);
     }
+
+    if (action.payload.contract_hash) {
+      newState[contractHashField] = action.payload.contract_hash;
+    } else if (requestName === 'ACCOUNT_HAS_CONTRACT') {
+      newState[contractHashField] = null;
+    }
   }
+
+  if (requestState === 'SUCCESS' || requestState === 'PENDING') delete newState[errField];
+  if (requestState === 'FAILURE') delete newState[txField];
 
   return newState;
 }

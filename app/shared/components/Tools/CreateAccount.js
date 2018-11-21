@@ -17,8 +17,9 @@ class ToolsCreateAccount extends Component<Props> {
     const {
       accounts,
       actions,
+      allBlockExplorers,
       balances,
-      blockExplorers,
+      connection,
       globals,
       keys,
       settings,
@@ -28,30 +29,43 @@ class ToolsCreateAccount extends Component<Props> {
       t
     } = this.props;
 
+    if (settings.walletMode === 'ledger') {
+      return (
+        <Segment>
+          <Header
+            content={t('tools_create_account_unavailable_header')}
+            icon="warning sign"
+            subheader={t('tools_create_account_unavailable_subheader')}
+          />
+        </Segment>
+      );
+    }
+
     const account = accounts[settings.account];
 
     const transaction = system && system.CREATEACCOUNT_LAST_TRANSACTION;
 
     return (
       <div>
-        {((keys && keys.key) || settings.walletMode === 'watch') ?
-        (
+        {((keys && keys.key) || ['watch', 'ledger'].includes(settings.walletMode))
+        ? (
           <Segment basic>
             <Header>
               {t('tools_create_account_header')}
               <Header.Subheader>
-                {t('tools_create_account_text')}
+                {t('tools_create_account_description', { chainSymbol: connection.chainSymbol })}
               </Header.Subheader>
             </Header>
             <GlobalTransactionHandler
               actionName="CREATEACCOUNT"
               actions={actions}
-              blockExplorers={blockExplorers}
+              blockExplorers={allBlockExplorers[connection.chainKey]}
               content={(
                 <ToolsFormCreateBitsharesEosAccount
                   account={account}
                   balance={balances[settings.account]}
                   balances={balances}
+                  connection={connection}
                   contacts={settings.contacts}
                   globals={globals}
                   hideCancel

@@ -23,12 +23,12 @@
 
 ### リリース
 
-現在の 0.5.3 リリースのダウンロード：
+現在の 0.6.2 リリースのダウンロード：
 
-- [Windowsインストーラ](https://github.com/greymass/eos-voter/releases/download/v0.5.3/win-eos-voter-0.5.3.exe)
-- [macOSパッケージ](https://github.com/greymass/eos-voter/releases/download/v0.5.3/mac-eos-voter-0.5.3.dmg)
-- [Linux (deb)](https://github.com/greymass/eos-voter/releases/download/v0.5.3/linux-eos-voter-0.5.3-amd64.deb)
-- [Linux (snap)](https://github.com/greymass/eos-voter/releases/download/v0.5.3/linux-eos-voter-0.5.3-amd64.snap)
+- [Windowsインストーラ](https://github.com/greymass/eos-voter/releases/download/v0.6.2/win-eos-voter-0.6.2.exe)
+- [macOSパッケージ](https://github.com/greymass/eos-voter/releases/download/v0.6.2/mac-eos-voter-0.6.2.dmg)
+- [Linux (deb)](https://github.com/greymass/eos-voter/releases/download/v0.6.2/linux-eos-voter-0.6.2-amd64.deb)
+- [Linux (snap)](https://github.com/greymass/eos-voter/releases/download/v0.6.2/linux-eos-voter-0.6.2-amd64.snap)
 
 最新のリリースはこのリポジトリのリリースページでいつでも利用可能です:
 
@@ -61,15 +61,17 @@
 ```
 git clone https://github.com/greymass/eos-voter.git eos-voter
 cd eos-voter
-yarn install
+npm install
+cd app
+npm install
+cd ..
 ```
 
 次に、いずれかを実行してください:
 
-- MacOS: `yarn package`
-- Linux: `yarn package-linux`
-- Windows: `yarn package-win`
-- All: `yarn package-all`
+- MacOS: `npm run package-mac`
+- Linux: `npm run package-linux`
+- Windows: `npm run package-win`
 
 プロジェクトのルートフォルダ内の`releases`にビルドしたファイルがあります。
 
@@ -78,8 +80,8 @@ yarn install
 ```
 git clone https://github.com/greymass/eos-voter.git eos-voter
 cd eos-voter
-yarn install
-yarn dev
+npm install
+npm run dev
 ```
 
 ### クレジット
@@ -96,40 +98,36 @@ Signed by [jesta on keybase](https://keybase.io/jesta)
 -----BEGIN PGP SIGNED MESSAGE-----
 Hash: SHA512
 
-shasum -b -a 512 linux-eos-voter-0.5.3-amd64.deb
-e55fc9fb53d0e8bd25f4e972a5fd8563086af50b6d6386b6597e9fbf39bfa7704d43f1778f236fe5e56b548eb7ce8a01ebd16884e787d68661475057636ec55e *linux-eos-voter-0.5.3-amd64.deb
-shasum -b -a 512 linux-eos-voter-0.5.3-amd64.snap
-02ba35cd83b00d13f3417c2ec7e4de1beae4f12f86cf156131683a067faa44b54c859e76f8aa6d57c245fc1d21437e347c1e1be077d2a319329967a67db23b30 *linux-eos-voter-0.5.3-amd64.snap
-shasum -b -a 512 linux-eos-voter-0.5.3-arm64.deb
-bfe806be8914feee01c319d107249f02f755e93b5ae270ed32ef25ae69d48bfb04379d65329ac5209baf2ff082c98c17de668d7f735826fdd6177550d50b4431 *linux-eos-voter-0.5.3-arm64.deb
-shasum -b -a 512 linux-eos-voter-0.5.3-armv7l.deb
-fe3ee24882e1ceb68e44536785d6d2cf1b2290a20bf1d721ffa3e36de46e7bae89de43e3bc29b2762b81abc1d1a0b68d0f494d6532305aa9433aebbadfaddba9 *linux-eos-voter-0.5.3-armv7l.deb
-shasum -b -a 512 linux-eos-voter-0.5.3-i386.deb
-7feffaeb0b6c1439b6be3a3ca6589eecf318cde40d1ac6bf16dbaefa52ef3b45b3a46ed1f5e0274922c119e32915855b533f85a71ca03474a826030269a44108 *linux-eos-voter-0.5.3-i386.deb
-shasum -b -a 512 linux-eos-voter-0.5.3-x86_64.AppImage
-8a73895f0709880de8b9b61693a28ed9813978001b6be7a63e599f52c091003f5bda7c7c69191270e4f25c2ec4b3d2cc22d49b777d206353bd4095b505b32bb6 *linux-eos-voter-0.5.3-x86_64.AppImage
-shasum -b -a 512 mac-eos-voter-0.5.3.dmg
-272104b0bd785137c399426dae6d3a555501f7fdcd2625114522d1230346639467e6ca803207f7af976a32a4d66277d202528eb1329a31a877b1dc79dac45eda *mac-eos-voter-0.5.3.dmg
-shasum -b -a 512 mac-eos-voter-0.5.3.zip
-1f8a6d4c294b29a291427a71939e6d31ee5474927f644776a008af806e1a2221c98ca97fba924a6b6c6d1bdc9290a56011a6cc00ea23d9c8ff5557319bd67584 *mac-eos-voter-0.5.3.zip
-shasum -b -a 512 win-eos-voter-0.5.3.exe
-83cbbd44bd5bc54f41b12b2ac2948fdbf21d0932cb4e845e6d3ff5adc02fb1e039763b3a3a08e9cdf556c8e234af492bc9178897699b6012017200c798fc2e98 *win-eos-voter-0.5.3.exe
+shasum -b -a 512 linux-eos-voter-0.6.2-amd64.deb
+a158c50a65ffa8c34c54aae5ff5d0e730fce6e881f102d558c47ed9b12fe555ba066da9961e817038d66ddd8554bbc339ef10111896af4a67e0159e3ed75f845 *linux-eos-voter-0.6.2-amd64.deb
+shasum -b -a 512 linux-eos-voter-0.6.2-arm64.deb
+e5c4dee66f097af7f23b7b1214e4b891e98c8e77dd3a99e60d4ba24f3f086f4b8ca2f6713b1a4af0627d58658411abdfaf36d33b793c6c3cc62de25a73b6fe9a *linux-eos-voter-0.6.2-arm64.deb
+shasum -b -a 512 linux-eos-voter-0.6.2-armv7l.deb
+bc0e001d5344d0ea56d7d39a445b5ec9c23d590026eb6c71d287135371a6b5f32146b89505e316cd05e7fc5287a620acd17c0ad2613861c390b705baaa25e19a *linux-eos-voter-0.6.2-armv7l.deb
+shasum -b -a 512 linux-eos-voter-0.6.2-x86_64.AppImage
+f03c07c4d10e16baf7ecfb36258da1ac08a62615330a6998bbb028ba5bb27dbccc634690edba0b9fe28957ba81497ec601a6aea0392d16bb65070290824ece2e *linux-eos-voter-0.6.2-x86_64.AppImage
+shasum -b -a 512 mac-eos-voter-0.6.2.dmg
+935ef44a0b62ad123259da5440a2351f3517aa939ab2ff6cb12f895d72aa48b7b67d0503aa20119ec6ef2f9a3f6815efa947bd8344ec93f6ed18ffe6a52f9f19 *mac-eos-voter-0.6.2.dmg
+shasum -b -a 512 mac-eos-voter-0.6.2.zip
+c00f9dd07f0f7e71efcca7a5c2f81104bc28bd99dbef13bab24f61cd1c774a9874489bae640694442cbcda5f9f54c4310fbefd38b23ad269175a83e834575693 *mac-eos-voter-0.6.2.zip
+shasum -b -a 512 win-eos-voter-0.6.2.exe
+5c9fe446bcbc28e43efbe3066eeab94ddcba3b9ccbdcb49a6157eacb2846ff99673594040fc48e75f68b97cb07b323a59de6b3bd7848d3b29c7e25797ce4f4a1 *win-eos-voter-0.6.2.exe
 -----BEGIN PGP SIGNATURE-----
-Version: Keybase OpenPGP v2.0.77
+Version: Keybase OpenPGP v2.0.80
 Comment: https://keybase.io/crypto
 
-wsFcBAABCgAGBQJbovsMAAoJECyLxnO05hN9BVwP/AxPWZjzf6cMz+ryLAf7G98A
-9kTnXYmI0I41+hrFaS+icPQokrAPadVLixq4vlzVV9/I4NDYM5AJr1rpx6ERGg2E
-eBUMhXu49WXdSjjocfWSqCBO86ZABUai++J4Lv/AKe58xTvyoId5MxyI7azmKY7A
-RT7myUCSGRqIX50bpkMa+1DbfZ8TpnymUnOqqpRjVi15RJ8DQUpDGQEK/Et2MIse
-8VlqYJ3A3cbZvyaZEQBMa8EhA09AzFopFSCu2CBuTLx3/eGUtkW8/r9eenWWiZUb
-/H+ktu1A95ejBENVFwTIHoOCEdgyh7Ipy0PqZqJegAfbPAO0wLda+0F4eePUqm6/
-5PE72dy92zh5DPzVpTgEvfcbJIG+V0SLtlWnchaob2nA4TSaJMWMKuA55aM5OVAy
-YBEePBzZzn8MDQ7G2aig7lUweE48aJk/h+y90yW0eA58XEhwrhXzsE1+QHY6pnSz
-Da2Zt2eD1paB87Sj0o86vmVFdT1FJHMdsIP62S2TEkNT0QyIMOVPR3AO/51dUi2h
-nohLutKJqIHWo1klLRWQ7ywfU5uA4OZT27iuTvXNs5s9fh1aN2nZ8/pwI7kTxFt0
-8d9YMayUcjspE5BXdLKBu1eMmOHqiyF76yRtvoezXwv8EuSN15S0tMEv78LDR4N8
-Nje+JUP0wUL0+9Vnm27v
-=HGmk
+wsFcBAABCgAGBQJb5K04AAoJECyLxnO05hN9mT0P/1fA+sgntRPGowmhlY6JB2X0
+cNLx+HuhAycQNp6k0W1BncwViV/iKAoq3GsZUrZLtCQyaS5cUXGzBBrHy4klboGF
+pZSvjmSHpPTEXyiII/Pmdqbhi57uUMwRMHjMqIPrUSz0AnMUxQpksi9SQTxG2NU1
+nxSG2QpaNgn9pJTKuUyVfSFB0XdITKkTobaZRlZ6djP9etiV9e7ptxwuxLUVZl1H
+SgfxC9uQZKAmvinagNn5RItEoZCcZcCSVcL3Nlhpsrm97uY96ey5js0T4CWTmS4p
+RuVnJ8myXJdcWoV8so0ZMD7LXBacr2b0J+MbA/OE/3IwXSxuc0W8xLlj40M36xML
+odb99ezaDDEpdTSvIl3iCTIzrK6eMYF90hbVf5xRZyHO5Z1pL1+0UHj31As8wb9g
+oxn9jsCP+5MHsYk/8u/Ac5Zv1FDBv1wb6dxdR3v+y8NwZcbL6/lWPQ6sfca9kNWp
+0NbLbvttbnGSmorpKbQbegEaUIWZV5lL8HAHWbdxaE5p3RBbbYlr1UjaKyRpX+Ic
+hhMkR5P0/KeFlBQ0m18q9vn2Au37Z+HwTKdHVa7ltsyQFiyMoiAed6jpfGQl5Jzt
+cR/cBeuV25ByFCXYGjjjZJ5bFG3hXnJA+UjnTTWC66i/i+JkALnB7qpaYWJxgkOl
+9SCqa5mn/bI1qY0mNdQS
+=6Pzm
 -----END PGP SIGNATURE-----
 ```

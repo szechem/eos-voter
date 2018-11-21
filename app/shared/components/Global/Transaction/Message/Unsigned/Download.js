@@ -4,9 +4,16 @@ import { translate } from 'react-i18next';
 import { Button, Header, Icon, Message, Modal, Segment } from 'semantic-ui-react';
 import ReactJson from 'react-json-view';
 
-const { ipcRenderer } = require('electron');
+const { clipboard, ipcRenderer } = require('electron');
 
 class GlobalTransactionMessageUnsignedDownload extends Component<Props> {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      copiedTransaction: false
+    };
+  }
   promptSave = () => {
     const { contract, transaction } = this.props;
     const data = JSON.stringify({
@@ -15,12 +22,26 @@ class GlobalTransactionMessageUnsignedDownload extends Component<Props> {
     }, null, 2);
     ipcRenderer.send('saveFile', data);
   }
+  onCopy = () => {
+    const {
+      transaction
+    } = this.props;
+
+    this.setState({ copiedTransaction: true }, () => {
+      clipboard.writeText(JSON.stringify(transaction));
+
+      setTimeout(() => { this.setState({ copiedTransaction: false }); }, 5000);
+    });
+  }
   render() {
     const {
       onClose,
       t,
       transaction
     } = this.props;
+    const {
+      copiedTransaction
+    } = this.state;
     return (
       <Segment basic>
         <Header
@@ -44,13 +65,27 @@ class GlobalTransactionMessageUnsignedDownload extends Component<Props> {
               style={{ padding: '1em' }}
               theme="harmonic"
             />
-            <Segment basic padded textAlign="center">
+            <Segment basic textAlign="center">
               <Button
                 color="blue"
                 content={t('global_transaction_unsigned_save_file')}
                 icon="download"
                 onClick={this.promptSave}
+                style={{ marginBottom: '1em' }}
               />
+              <Button
+                color="teal"
+                content={t('global_transaction_unsigned_copy_to_clipboard')}
+                icon={(copiedTransaction) ? "circle check" : "clipboard"}
+                onClick={this.onCopy}
+              />
+              {(copiedTransaction) && (
+                <Message
+                  color="teal"
+                  content={t('global_transaction_unsigned_copied')}
+                  icon="check"
+                />
+              )}
             </Segment>
           </Segment>
           <Message

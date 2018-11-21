@@ -4,6 +4,7 @@ import { Button, Divider, Form, Message, Icon, Segment } from 'semantic-ui-react
 import { translate } from 'react-i18next';
 import { findIndex } from 'lodash';
 
+import debounce from 'lodash/debounce';
 import FormFieldMultiToken from '../../../../Global/Form/Field/MultiToken';
 import FormMessageError from '../../../../Global/Form/Message/Error';
 import GlobalFormFieldAccount from '../../../../Global/Form/Field/Account';
@@ -16,7 +17,7 @@ class WalletPanelFormTransferSend extends Component<Props> {
   constructor(props) {
     super(props);
     this.state = {
-      asset: 'EOS',
+      asset: props.connection.chainSymbol || 'EOS',
       confirming: false,
       formError: false,
       from: props.settings.account,
@@ -71,9 +72,16 @@ class WalletPanelFormTransferSend extends Component<Props> {
     return false;
   }
 
+  getContractHash = debounce((value) => {
+    const { actions } = this.props;
+
+    actions.getContractHash(value);
+  }, 400)
+
   onChange = (e, { name, value, valid }) => {
     if (name === 'to') {
       const {
+        actions,
         settings
       } = this.props;
       const {
@@ -85,6 +93,8 @@ class WalletPanelFormTransferSend extends Component<Props> {
       if (position > -1) {
         this.onChange(e, { name: 'memo', value: contacts[position].defaultMemo || '', valid: true });
       }
+
+      this.getContractHash(value);
     }
 
 
@@ -170,6 +180,7 @@ class WalletPanelFormTransferSend extends Component<Props> {
   render() {
     const {
       balances,
+      connection,
       onClose,
       settings,
       system,
@@ -183,7 +194,6 @@ class WalletPanelFormTransferSend extends Component<Props> {
       memo,
       quantity,
       submitDisabled,
-      symbol,
       to,
       waiting,
       waitingStarted
@@ -205,7 +215,13 @@ class WalletPanelFormTransferSend extends Component<Props> {
       });
     }
 
-    const hasWarnings = exchangeWarning;
+    const shouldDisplayTransferingToContractMessage =
+      to &&
+      system.ACCOUNT_HAS_CONTRACT_LAST_ACCOUNT === to &&
+      system.ACCOUNT_HAS_CONTRACT_LAST_CONTRACT_HASH &&
+      system.ACCOUNT_HAS_CONTRACT_LAST_CONTRACT_HASH !== '0000000000000000000000000000000000000000000000000000000000000000';
+
+    const hasWarnings = exchangeWarning || shouldDisplayTransferingToContractMessage;
 
     return (
       <Form
@@ -241,8 +257,16 @@ class WalletPanelFormTransferSend extends Component<Props> {
                 onChange={this.onChange}
                 value={to}
               />
+              {(shouldDisplayTransferingToContractMessage) && (
+                <Message
+                  content={t('transfer_destination_account_is_contract')}
+                  icon="warning sign"
+                  warning
+                />
+              )}
               <FormFieldMultiToken
                 balances={balances}
+                connection={connection}
                 icon="x"
                 label={t('transfer_label_token_and_quantity')}
                 loading={false}
@@ -253,7 +277,11 @@ class WalletPanelFormTransferSend extends Component<Props> {
                 value={quantity}
               />
               <p>
-                {`${balance[asset].toFixed(4)} ${asset} ${t('transfer_header_available')}`}
+                {(balance[asset] && balance[asset].toFixed(4)) || '0.0000'}
+                &nbsp;
+                {asset}
+                &nbsp;
+                {t('transfer_header_available')}
               </p>
               <GlobalFormFieldMemo
                 icon="x"

@@ -14,11 +14,9 @@ class Producers extends Component<Props> {
   constructor(props) {
     super(props);
     this.state = {
-      amount: 40,
       lastError: false,
       lastTransaction: {},
       previewing: false,
-      querying: false,
       selected: [],
       selected_account: false,
       selected_loaded: false,
@@ -27,17 +25,7 @@ class Producers extends Component<Props> {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { validate } = this.props;
     const { settings, system } = nextProps;
-    const nextValidate = nextProps.validate;
-    // On a new node connection, update props + producers
-    if (
-      validate.NODE === 'PENDING'
-      && nextValidate.NODE === 'SUCCESS'
-    ) {
-      this.props.actions.getGlobals();
-      this.tick();
-    }
     // Update state when the transaction has gone through
     if (
       this.state.submitting
@@ -147,10 +135,11 @@ class Producers extends Component<Props> {
 
   render() {
     const {
-      actions,
       accounts,
+      actions,
+      allBlockExplorers,
       balances,
-      blockExplorers,
+      connection,
       globals,
       history,
       keys,
@@ -177,7 +166,7 @@ class Producers extends Component<Props> {
         actions={actions}
         accounts={accounts}
         balances={balances}
-        blockExplorers={blockExplorers}
+        blockExplorers={allBlockExplorers[connection.chainKey]}
         globals={globals}
         key="WalletPanel"
         keys={keys}
@@ -190,7 +179,7 @@ class Producers extends Component<Props> {
     )];
     const account = accounts[settings.account];
     const isProxying = !!(account && account.voter_info && account.voter_info.proxy);
-    const isValidUser = !!((keys && keys.key && settings.walletMode !== 'wait') || settings.walletMode === 'watch');
+    const isValidUser = !!((keys && keys.key && settings.walletMode !== 'wait') || ['watch', 'ledger'].includes(settings.walletMode));
     const modified = (selected.sort().toString() !== producers.selected.sort().toString());
     const currentProxy = (account && account.voter_info && account.voter_info.proxy);
 
@@ -202,7 +191,7 @@ class Producers extends Component<Props> {
             accounts={accounts}
             actions={actions}
             addProxy={addProxy}
-            blockExplorers={blockExplorers}
+            blockExplorers={allBlockExplorers[connection.chainKey]}
             currentProxy={currentProxy}
             keys={keys}
             isProxying={isProxying}
@@ -219,7 +208,7 @@ class Producers extends Component<Props> {
           {(!isProxying) ? (
             <ProducersVotingPreview
               actions={actions}
-              blockExplorers={blockExplorers}
+              blockExplorers={allBlockExplorers[connection.chainKey]}
               lastError={lastError}
               lastTransaction={lastTransaction}
               open={previewing}
@@ -246,6 +235,41 @@ class Producers extends Component<Props> {
       );
     }
 
+    const tabPanes = [
+      {
+        menuItem: t('producers_block_producers'),
+        render: () => {
+          return (
+            <Tab.Pane>
+              <BlockProducers
+                {...this.props}
+                addProducer={this.addProducer.bind(this)}
+                removeProducer={this.removeProducer.bind(this)}
+                selected={selected}
+              />
+            </Tab.Pane>
+          );
+        }
+      }
+    ];
+
+    if (connection.supportedContracts && connection.supportedContracts.includes('regproxyinfo')) {
+      tabPanes.push({
+        menuItem: t('producers_proxies'),
+        render: () => {
+          return (
+            <Tab.Pane>
+              <Proxies
+                {...this.props}
+                addProxy={this.addProxy.bind(this)}
+                removeProxy={this.removeProxy.bind(this)}
+              />
+            </Tab.Pane>
+          );
+        }
+      });
+    }
+
     return (
       <div ref={this.handleContextRef}>
         <Grid divided>
@@ -260,39 +284,7 @@ class Producers extends Component<Props> {
             </Grid.Column>
             <Grid.Column width={10}>
               <Tab
-                panes={
-                  [
-                    {
-                      menuItem: t('producers_block_producers'),
-                      render: () => {
-                        return (
-                          <Tab.Pane>
-                            <BlockProducers
-                              {...this.props}
-                              addProducer={this.addProducer.bind(this)}
-                              removeProducer={this.removeProducer.bind(this)}
-                              selected={selected}
-                            />
-                          </Tab.Pane>
-                        );
-                      }
-                    },
-                    {
-                      menuItem: t('producers_proxies'),
-                      render: () => {
-                        return (
-                          <Tab.Pane>
-                            <Proxies
-                              {...this.props}
-                              addProxy={this.addProxy.bind(this)}
-                              removeProxy={this.removeProxy.bind(this)}
-                            />
-                          </Tab.Pane>
-                        );
-                      }
-                    }
-                  ]
-                }
+                panes={tabPanes}
               />
             </Grid.Column>
           </Grid.Row>

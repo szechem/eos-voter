@@ -28,6 +28,9 @@ class WalletPanelUnlocked extends Component<Props> {
       actions,
       balances,
       blockExplorers,
+      connection,
+      globals,
+      validate,
       settings,
       system,
       transaction,
@@ -35,7 +38,7 @@ class WalletPanelUnlocked extends Component<Props> {
     } = this.props;
     return (
       <div>
-        {(settings.walletMode !== 'watch' && !settings.walletTemp)
+        {(settings.walletMode !== 'watch' && settings.walletMode !== 'ledger' && !settings.walletTemp)
           ? (
             <WalletPanelButtonLock
               lockWallet={actions.lockWallet}
@@ -66,6 +69,8 @@ class WalletPanelUnlocked extends Component<Props> {
                       actions={actions}
                       balances={balances}
                       blockExplorers={blockExplorers}
+                      connection={connection}
+                      validate={validate}
                       settings={settings}
                       system={system}
                     />
@@ -75,6 +80,7 @@ class WalletPanelUnlocked extends Component<Props> {
                       actions={actions}
                       balances={balances}
                       blockExplorers={blockExplorers}
+                      connection={connection}
                       settings={settings}
                       system={system}
                     />

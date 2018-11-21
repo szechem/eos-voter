@@ -14,30 +14,31 @@ import FormMessageError from '../../Global/Form/Message/Error';
 import ToolsFormCreateAccountConfirming from './CreateAccount/Confirming';
 import calculatePriceOfRam from '../../helpers/calculatePriceOfRam';
 
-const formAttributes = ['accountName', 'activeKey', 'ownerKey', 'delegatedBw', 'delegatedCpu', 'ramAmount'];
+const formAttributes = ['accountName', 'activeKeyValue', 'ownerKeyValue', 'delegatedBw', 'delegatedCpu', 'ramAmount'];
 
 class ToolsFormCreateAccount extends Component<Props> {
   constructor(props) {
     super(props);
     const {
       accountName,
-      activeKey,
+      activeKeyValue,
       balance,
+      connection,
       delegatedBw,
       delegatedCpu,
-      ownerKey,
+      ownerKeyValue,
       ramAmount
     } = props;
 
     this.state = {
       accountName,
-      activeKey,
+      activeKeyValue,
       confirming: false,
       delegatedBw,
       delegatedCpu,
-      EOSbalance: (balance && balance.EOS) ? balance.EOS : 0,
+      chainSymbolBalance: balance && balance[connection.chainSymbol] || 0,
       formErrors: {},
-      ownerKey,
+      ownerKeyValue,
       ramAmount,
       submitDisabled: true
     };
@@ -115,7 +116,7 @@ class ToolsFormCreateAccount extends Component<Props> {
         checkAccountAvailability(accountName);
       }
 
-      if (name === 'ramAmount') {
+      if (name === 'ramAmount' && globals.ram) {
         const decBaseBal = Decimal(globals.ram.base_balance);
         const decQuoteBal = Decimal(globals.ram.quote_balance);
 
@@ -170,7 +171,7 @@ class ToolsFormCreateAccount extends Component<Props> {
     const {
       delegatedBw,
       delegatedCpu,
-      EOSbalance,
+      chainSymbolBalance,
       ramAmount,
       ramPrice
     } = this.state;
@@ -197,7 +198,7 @@ class ToolsFormCreateAccount extends Component<Props> {
       submitDisabled = true;
     }
 
-    const decimalBalance = Decimal(EOSbalance);
+    const decimalBalance = Decimal(chainSymbolBalance);
     const decimalDelegatedBw = Decimal(delegatedBw.split(' ')[0]);
     const decimalDelegatedCpu = Decimal(delegatedCpu.split(' ')[0]);
 
@@ -205,11 +206,11 @@ class ToolsFormCreateAccount extends Component<Props> {
 
     if (ramPrice.plus(decimalDelegatedResources).greaterThan(decimalBalance)) {
       if (delegatedBw > 1) {
-        formErrors.delegatedBw = 'not_enough_balance';
+        formErrors.delegatedBw = 'error_insufficient_balance';
       } else if (delegatedCpu > 1) {
-        formErrors.delegatedCpu = 'not_enough_balance';
+        formErrors.delegatedCpu = 'error_insufficient_balance';
       } else {
-        formErrors.ramAmount = 'not_enough_balance';
+        formErrors.ramAmount = 'error_insufficient_balance';
       }
 
       submitDisabled = true;
@@ -239,20 +240,20 @@ class ToolsFormCreateAccount extends Component<Props> {
 
     const {
       accountName,
-      activeKey,
+      activeKeyValue,
       delegatedBw,
       delegatedCpu,
-      ownerKey,
+      ownerKeyValue,
       ramAmount,
       transferTokens
     } = this.state;
 
     createAccount(
       accountName,
-      activeKey,
+      activeKeyValue,
       delegatedBw,
       delegatedCpu,
-      ownerKey,
+      ownerKeyValue,
       ramAmount,
       transferTokens
     );
@@ -260,6 +261,7 @@ class ToolsFormCreateAccount extends Component<Props> {
 
   render() {
     const {
+      connection,
       hideCancel,
       onClose,
       system,
@@ -268,12 +270,12 @@ class ToolsFormCreateAccount extends Component<Props> {
 
     const {
       accountName,
-      activeKey,
+      activeKeyValue,
       contacts,
       delegatedBw,
       delegatedCpu,
       formErrors,
-      ownerKey,
+      ownerKeyValue,
       ramAmount,
       ramPrice,
       transferTokens
@@ -311,7 +313,7 @@ class ToolsFormCreateAccount extends Component<Props> {
 
     const shouldShowAccountNameWarning = accountName && accountName.length !== 12;
 
-    const shouldShowPublicKeysWarning = activeKey && activeKey === ownerKey;
+    const shouldShowPublicKeysWarning = activeKeyValue && activeKeyValue === ownerKeyValue;
 
     const shouldShowDelegatedResourceWarning =
       (decimalDelegatedBw &&
@@ -341,15 +343,17 @@ class ToolsFormCreateAccount extends Component<Props> {
                 onSubmit={this.onSubmit}
               >
                 <GlobalFormFieldKeyPublic
-                  defaultValue={ownerKey || ''}
+                  connection={connection}
+                  defaultValue={ownerKeyValue || ''}
                   label={t('tools_form_create_account_owner_key')}
-                  name="ownerKey"
+                  name="ownerKeyValue"
                   onChange={this.onChange}
                 />
                 <GlobalFormFieldKeyPublic
-                  defaultValue={activeKey || ''}
+                  connection={connection}
+                  defaultValue={activeKeyValue || ''}
                   label={t('tools_form_create_account_active_key')}
-                  name="activeKey"
+                  name="activeKeyValue"
                   onChange={this.onChange}
                 />
                 <GlobalFormFieldAccount
@@ -366,14 +370,16 @@ class ToolsFormCreateAccount extends Component<Props> {
                   onChange={this.onChange}
                 />
                 <GlobalFormFieldToken
+                  connection={connection}
                   defaultValue={delegatedBw && delegatedBw.split(' ')[0]}
-                  label={t('tools_form_create_account_delegated_bw')}
+                  label={t('tools_form_create_account_delegated_bw_label', { chainSymbol: connection.chainSymbol })}
                   name="delegatedBw"
                   onChange={this.onChange}
                 />
                 <GlobalFormFieldToken
+                  connection={connection}
                   defaultValue={delegatedCpu && delegatedCpu.split(' ')[0]}
-                  label={t('tools_form_create_account_delegated_cpu')}
+                  label={t('tools_form_create_account_delegated_cpu_label', { chainSymbol: connection.chainSymbol })}
                   name="delegatedCpu"
                   onChange={this.onChange}
                 />
@@ -385,10 +391,11 @@ class ToolsFormCreateAccount extends Component<Props> {
                 />
                 {(ramPrice && !formErrors.ramAmount) ? (
                   <h4 style={{ margin: '30px' }}>
-                    {`${t('tools_form_create_account_ram_price_estimate')} ${ramPrice.toFixed(4)} EOS.`}
+                    {`${t('tools_form_create_account_ram_price_estimate')} ${ramPrice.toFixed(4)} ${connection.chainSymbol}.`}
                   </h4>
                 ) : ''}
                 <FormMessageError
+                  chainSymbol={connection.chainSymbol}
                   errors={
                     formErrorKeys.length > 0 && formErrorKeys.reduce((errors, key) => {
                       const error = this.state.formErrors[key];
@@ -420,7 +427,7 @@ class ToolsFormCreateAccount extends Component<Props> {
                 {(shouldShowDelegatedResourceWarning)
                   ? (
                     <Message
-                      content={t('tools_form_create_account_delegated_resources_warning')}
+                      content={t('tools_form_create_account_delegated_resources_warning_message')}
                       icon="info circle"
                       warning
                     />
@@ -460,12 +467,13 @@ class ToolsFormCreateAccount extends Component<Props> {
           ? (
             <ToolsFormCreateAccountConfirming
               accountName={accountName}
-              activeKey={activeKey}
+              activeKeyValue={activeKeyValue}
+              connection={connection}
               delegatedBw={delegatedBw}
               delegatedCpu={delegatedCpu}
               onBack={this.onBack}
               onConfirm={this.onConfirm}
-              ownerKey={ownerKey}
+              ownerKeyValue={ownerKeyValue}
               ramAmount={ramAmount}
               transferTokens={transferTokens}
               totalCost={ramPrice}

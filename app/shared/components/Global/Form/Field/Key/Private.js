@@ -18,11 +18,13 @@ class GlobalFormFieldKeyPrivate extends Component<Props> {
       value: parsed
     }, () => {
       try {
-        const publicKey = ecc.privateToPublic(parsed);
+        const { connection } = this.props;
+        const prefix = (connection && connection.keyPrefix) ? connection.keyPrefix : 'EOS';
+        const publicKey = ecc.privateToPublic(parsed, prefix);
         const valid = ecc.isValidPrivate(parsed);
         this.props.onChange(e, {
           name,
-          publicKey: publicKey,
+          publicKey,
           valid,
           value: parsed
         });

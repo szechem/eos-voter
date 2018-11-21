@@ -36,8 +36,6 @@ class WelcomeWalletContainer extends Component<Props> {
     };
   }
 
-  isSafeish = (url) => url.startsWith('http:') || url.startsWith('https:')
-
   onChange = debounce((e, { name, value }) => {
     this.setState({
       [name]: value.trim()
@@ -63,9 +61,11 @@ class WelcomeWalletContainer extends Component<Props> {
       decrypt,
       setSetting,
       setTemporaryKey,
-      setWalletKey
+      setWalletHash,
+      setWalletKey,
     } = actions;
     if (encryptWallet) {
+      setWalletHash(password);
       setSetting('walletInit', true);
       setWalletKey(key, password, settings.walletMode, hash);
     } else {
@@ -110,6 +110,7 @@ class WelcomeWalletContainer extends Component<Props> {
             autoFocus
             control={Input}
             fluid
+            key="password"
             icon="lock"
             label={t('wallet_panel_password_label')}
             name="password"
@@ -119,9 +120,10 @@ class WelcomeWalletContainer extends Component<Props> {
           ), (
             <Message
               content={t('wallet_panel_form_will_save')}
+              key="message"
             />
           ), (
-            <Container>
+            <Container key="controls">
               <WalletPanelFormModalConfirm
                 open={confirming}
                 onCancel={this.onCancel}
@@ -140,9 +142,10 @@ class WelcomeWalletContainer extends Component<Props> {
         : [(
           <Message
             content={t('wallet_panel_form_not_saved')}
+            key="message"
           />
         ), (
-          <Container>
+          <Container key="controls">
             <Button
               content={t('wallet_panel_form_use_temporary')}
               color="green"

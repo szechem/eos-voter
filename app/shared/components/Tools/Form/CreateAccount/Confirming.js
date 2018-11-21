@@ -17,11 +17,12 @@ class ToolsFormCreateAccountConfirming extends Component<Props> {
   render() {
     const {
       accountName,
-      activeKey,
+      activeKeyValue,
+      connection,
       delegatedBw,
       delegatedCpu,
       onBack,
-      ownerKey,
+      ownerKeyValue,
       ramAmount,
       t,
       totalCost,
@@ -32,9 +33,9 @@ class ToolsFormCreateAccountConfirming extends Component<Props> {
     return (
       <Segment padding="true" basic>
         <Header textAlign="center">
-          <p>{`${t('tools_form_create_account_confirming_header_one')} ${totalCost.toFixed(4)} EOS.`}</p>
+          <p>{`${t('tools_form_create_account_confirming_header_one')} ${totalCost.toFixed(4)} ${connection.chainSymbol || 'EOS'}.`}</p>
           <p>
-            {`${t('tools_form_create_account_confirming_header_two')} ${totalDelegated.toFixed(4)} EOS ${t('tools_form_create_account_confirming_header_three')}`}
+            {`${t('tools_form_create_account_confirming_header_two')} ${totalDelegated.toFixed(4)} ${connection.chainSymbol || 'EOS'} ${t('tools_form_create_account_confirming_header_three')}`}
           </p>
         </Header>
         <Table size="small" celled>
@@ -44,7 +45,7 @@ class ToolsFormCreateAccountConfirming extends Component<Props> {
                 {t('tools_form_create_account_owner_key')}
               </Table.Cell>
               <Table.Cell width={8}>
-                {ownerKey}
+                {ownerKeyValue}
               </Table.Cell>
             </Table.Row>
             <Table.Row>
@@ -52,7 +53,7 @@ class ToolsFormCreateAccountConfirming extends Component<Props> {
                 {t('tools_form_create_account_active_key')}
               </Table.Cell>
               <Table.Cell width={8}>
-                {activeKey}
+                {activeKeyValue}
               </Table.Cell>
             </Table.Row>
             <Table.Row>
@@ -75,7 +76,7 @@ class ToolsFormCreateAccountConfirming extends Component<Props> {
             </Table.Row>
             <Table.Row>
               <Table.Cell width={8}>
-                {t('tools_form_create_account_delegated_bw')}
+                {t('tools_form_create_account_delegated_bw_label', { chainSymbol: connection.chainSymbol })}
               </Table.Cell>
               <Table.Cell width={8}>
                 {delegatedBw}
@@ -83,7 +84,7 @@ class ToolsFormCreateAccountConfirming extends Component<Props> {
             </Table.Row>
             <Table.Row>
               <Table.Cell width={8}>
-                {t('tools_form_create_account_delegated_cpu')}
+                {t('tools_form_create_account_delegated_cpu_label', { chainSymbol: connection.chainSymbol })}
               </Table.Cell>
               <Table.Cell width={8}>
                 {delegatedCpu}

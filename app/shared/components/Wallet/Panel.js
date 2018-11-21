@@ -26,6 +26,7 @@ export default class WalletPanel extends Component<Props> {
       actions,
       balances,
       blockExplorers,
+      connection,
       globals,
       keys,
       settings,
@@ -54,13 +55,14 @@ export default class WalletPanel extends Component<Props> {
         />
       );
     }
-    if ((keys && keys.key) || settings.walletMode === 'watch') {
+    if ((keys && keys.key) || settings.walletMode === 'watch' || settings.walletMode === 'ledger') {
       panel = (
         <WalletPanelUnlocked
           accounts={accounts}
           actions={actions}
           balances={balances}
           blockExplorers={blockExplorers}
+          connection={connection}
           globals={globals}
           settings={settings}
           system={system}

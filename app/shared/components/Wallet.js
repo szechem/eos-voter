@@ -11,9 +11,11 @@ type Props = {
   accounts: {},
   actionHistories: {},
   actions: {},
+  allBlockExplorers: {},
   balances: {},
   balances: {},
-  blockExplorers: {},
+  chain: {},
+  connection: {},
   globals: {},
   keys: {},
   settings: {},
@@ -32,9 +34,10 @@ export default class Wallet extends Component<Props> {
       actionHistories,
       actions,
       accounts,
+      allBlockExplorers,
       balances,
-      blockExplorers,
       chain,
+      connection,
       globals,
       keys,
       settings,
@@ -54,7 +57,8 @@ export default class Wallet extends Component<Props> {
               actions={actions}
               accounts={accounts}
               balances={balances}
-              blockExplorers={blockExplorers}
+              blockExplorers={allBlockExplorers[connection.chainKey]}
+              connection={connection}
               globals={globals}
               keys={keys}
               settings={settings}
@@ -70,11 +74,13 @@ export default class Wallet extends Component<Props> {
               actionHistories={actionHistories}
               accounts={accounts}
               balances={balances}
-              blockExplorers={blockExplorers}
+              blockExplorers={allBlockExplorers[connection.chainKey]}
               chain={chain}
+              connection={connection}
               globals={globals}
               keys={keys}
               settings={settings}
+              system={system}
               tables={tables}
               validate={validate}
               wallet={wallet}

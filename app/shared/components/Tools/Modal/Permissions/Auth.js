@@ -12,6 +12,8 @@ class ToolsModalPermissionAuth extends Component<Props> {
       auth,
       blockExplorers,
       button,
+      connection,
+      defaultValue,
       open,
       pubkey,
       settings,
@@ -28,8 +30,11 @@ class ToolsModalPermissionAuth extends Component<Props> {
           <ToolsFormPermissionsAuth
             actions={actions}
             auth={auth}
+            connection={connection}
+            defaultValue={defaultValue}
             pubkey={pubkey}
             settings={settings}
+            system={system}
           />
         )}
         icon="share square"

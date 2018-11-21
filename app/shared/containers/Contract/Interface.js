@@ -14,31 +14,14 @@ import * as TransactionActions from '../../actions/transaction';
 import * as WalletActions from '../../actions/wallet';
 
 import ContractInterfaceComponent from '../../components/Contract/Interface/Component';
-import WalletPanelLocked from '../../components/Wallet/Panel/Locked';
 
 import EOSContract from '../../utils/EOS/Contract';
 
 class ContractInterfaceContainer extends Component<Props> {
   render() {
-    const {
-      actions,
-      keys,
-      settings,
-      validate,
-      wallet
-    } = this.props;
-    return ((keys && keys.key) || settings.walletMode === 'watch')
-      ? (
-        <ContractInterfaceComponent {...this.props} />
-      )
-      : (
-        <WalletPanelLocked
-          actions={actions}
-          settings={settings}
-          validate={validate}
-          wallet={wallet}
-        />
-      );
+    return (
+      <ContractInterfaceComponent {...this.props} />
+    );
   }
 }
 
@@ -47,7 +30,7 @@ function mapStateToProps(state) {
   const contracts = mapValues(state.contracts, (contract) =>
     new EOSContract(contract.abi, contract.account_name));
   return {
-    blockExplorers: state.blockexplorers,
+    blockExplorers: state.blockexplorers[state.connection.chainKey],
     contracts,
     keys: state.keys,
     settings: state.settings,

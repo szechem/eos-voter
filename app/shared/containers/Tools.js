@@ -9,28 +9,34 @@ import compose from 'lodash/fp/compose';
 import { Menu, Tab } from 'semantic-ui-react';
 
 import ContractInterface from './Contract/Interface';
+import RecommendationInterface from './Recommendation/Interface';
 
 import Tools from '../components/Tools';
-import ToolsCreateAccount from '../components/Tools/CreateAccount';
+import ToolsBidName from '../components/Tools/BidName';
 import ToolsContacts from '../components/Tools/Contacts';
+import ToolsCreateAccount from '../components/Tools/CreateAccount';
 import ToolsCustomTokens from '../components/Tools/CustomTokens';
 import ToolsDelegations from '../components/Tools/Delegations';
 import ToolsGovernanceProposals from '../components/Tools/Governance/Proposals';
+import ToolsHardwareLedger from '../components/Tools/Hardware/Ledger';
 import ToolsKeys from '../components/Tools/Keys';
 import ToolsKeysValidator from '../components/Tools/Keys/Validator';
+import ToolsPermissions from '../components/Tools/Permissions';
+import ToolsProxy from '../components/Tools/Proxy';
+import ToolsReset from '../components/Tools/Reset';
 import ToolsStateChain from '../components/Tools/State/Chain';
 import ToolsStateGlobals from '../components/Tools/State/Globals';
 import ToolsStateWallet from '../components/Tools/State/Wallet';
-import ToolsPermissions from '../components/Tools/Permissions';
-import ToolsProxy from '../components/Tools/Proxy';
 import ToolsWallets from '../components/Tools/Wallets';
-import ToolsReset from '../components/Tools/Reset';
 
 import * as AccountsActions from '../actions/accounts';
+import * as BidNameActions from '../actions/system/bidname';
 import * as ContractsActions from '../actions/contracts';
 import * as CreateAccountActions from '../actions/createaccount';
 import * as CustomTokensActions from '../actions/customtokens';
 import * as GlobalsActions from '../actions/globals';
+import * as HardwareLedgerActions from '../actions/hardware/ledger';
+import * as NameBidsActions from '../actions/namebids';
 import * as ProposalsActions from '../actions/governance/proposals';
 import * as RegProxyActions from '../actions/system/regproxy';
 import * as RegproxyinfoActions from '../actions/system/community/regproxyinfo';
@@ -39,36 +45,43 @@ import * as StakeActions from '../actions/stake';
 import * as SystemStateActions from '../actions/system/systemstate';
 import * as TableActions from '../actions/table';
 import * as TransactionActions from '../actions/transaction';
-import * as UpdateAuthActions from '../actions/system/updateauth';
 import * as UnregProxyActions from '../actions/system/unregproxy';
+import * as UpdateAuthActions from '../actions/system/updateauth';
 import * as WalletActions from '../actions/wallet';
 import * as WalletsActions from '../actions/wallets';
 
 const paneMapping = [
   {
     element: Tools,
-    modes: ['cold', 'hot', 'watch', 'skip'],
+    modes: ['cold', 'hot', 'ledger', 'watch', 'skip', 'temp'],
     name: 'index',
   },
   {
+    element: ToolsWallets,
+    modes: ['cold', 'hot', 'ledger', 'watch', 'skip'],
+    name: 'wallets',
+  },
+  {
     header: true,
-    modes: ['hot', 'watch', 'skip'],
+    modes: ['hot', 'ledger', 'watch', 'skip', 'temp'],
     name: 'governance',
   },
   {
     element: ToolsGovernanceProposals,
-    modes: ['hot', 'watch', 'skip'],
-    name: 'governance_proposals_test'
+    modes: ['hot', 'ledger', 'watch', 'skip', 'temp'],
+    name: 'governance_referendum_beta',
+    requiredContract: 'proposals'
   },
   {
     header: true,
-    modes: ['cold', 'hot', 'watch', 'skip'],
+    modes: ['cold', 'hot', 'ledger', 'watch', 'skip', 'temp'],
     name: 'wallet',
   },
   {
     element: ToolsCustomTokens,
-    modes: ['hot', 'watch'],
+    modes: ['hot', 'ledger', 'watch', 'temp'],
     name: 'customtokens',
+    requiredContract: 'customtokens'
   },
   {
     element: ToolsWallets,
@@ -77,89 +90,127 @@ const paneMapping = [
   },
   {
     element: ToolsPermissions,
-    modes: ['hot', 'watch'],
+    modes: ['hot', 'ledger', 'watch', 'temp'],
     name: 'permissions',
   },
   {
+    element: RecommendationInterface,
+    modes: ['hot', 'ledger', 'watch', 'skip', 'temp'],
+    name: 'recommendation',
+  },
+  {
     element: ContractInterface,
-    modes: ['hot', 'watch', 'skip'],
+    modes: ['hot', 'ledger', 'watch', 'skip', 'temp'],
     name: 'contracts',
   },
   {
     header: true,
-    modes: ['cold', 'hot', 'watch', 'skip'],
-    name: 'utilities',
+    modes: ['hot', 'ledger', 'watch'],
+    name: 'hardware'
   },
   {
+    element: ToolsHardwareLedger,
+    modes: ['hot', 'ledger', 'watch'],
+    name: 'hardware_ledger',
+  },
+  {
+    header: true,
+    modes: ['cold', 'hot', 'ledger', 'watch', 'skip', 'temp'],
+    name: 'utilities',
+  },
+  // {
+  //   element: ToolsBidName,
+  //   modes: ['hot', 'watch'],
+  //   name: 'bid_name',
+  // },
+  {
     element: ToolsContacts,
-    modes: ['hot', 'watch'],
+    modes: ['hot', 'ledger', 'watch'],
     name: 'contacts',
   },
   {
     element: ToolsCreateAccount,
-    modes: ['hot', 'watch'],
+    modes: ['hot', 'ledger', 'watch', 'temp'],
     name: 'create_account',
   },
   {
     element: ToolsKeys,
-    modes: ['cold', 'hot', 'skip', 'watch'],
+    modes: ['cold', 'hot', 'ledger', 'skip', 'watch', 'temp'],
     name: 'keygenerator',
   },
   {
     element: ToolsKeysValidator,
-    modes: ['cold', 'hot', 'skip', 'watch'],
+    modes: ['cold', 'hot', 'ledger', 'skip', 'watch', 'temp'],
     name: 'keyvalidator',
   },
   {
     element: ToolsProxy,
-    modes: ['hot', 'watch'],
+    modes: ['hot', 'ledger', 'watch', 'temp'],
     name: 'proxy',
   },
   {
     header: true,
-    modes: ['cold', 'hot', 'watch', 'skip'],
+    modes: ['cold', 'hot', 'ledger', 'watch', 'skip', 'temp'],
     name: 'state',
   },
   {
     element: ToolsStateChain,
-    modes: ['hot', 'watch'],
+    modes: ['hot', 'ledger', 'watch', 'temp'],
     name: 'state_chain',
   },
   {
     element: ToolsStateGlobals,
-    modes: ['hot', 'watch'],
+    modes: ['hot', 'ledger', 'watch', 'temp'],
     name: 'state_globals',
   },
   {
     element: ToolsStateWallet,
-    modes: ['cold', 'hot', 'skip', 'watch'],
+    modes: ['cold', 'hot', 'ledger', 'skip', 'watch', 'temp'],
     name: 'state',
   },
   {
     header: true,
-    modes: ['cold', 'hot', 'watch', 'skip'],
+    modes: ['cold', 'hot', 'ledger', 'watch', 'skip', 'temp'],
     name: 'advanced',
   },
   {
     element: ToolsReset,
-    modes: ['cold', 'hot', 'skip', 'watch'],
+    modes: ['cold', 'hot', 'ledger', 'skip', 'watch', 'temp'],
     name: 'reset',
   },
 ];
 
 class ToolsContainer extends Component<Props> {
   getPanes() {
-    const { t } = this.props;
+    const {
+      allBlockExplorers,
+      connection,
+      t
+    } = this.props;
     return paneMapping
       .filter((pane) => {
-        const { settings } = this.props;
+        const {
+          settings
+        } = this.props;
         const {
           skipImport,
-          walletMode
+          walletMode,
+          walletTemp
         } = settings;
+
+        const blockchainUnknownAndRestricted =
+          !connection.supportedContracts && pane.requiredContract;
+        const blockchainKnownAndFeatureNotSupported =
+          pane.requiredContract &&
+          !connection.supportedContracts.includes(pane.requiredContract);
+
+        if (blockchainUnknownAndRestricted || blockchainKnownAndFeatureNotSupported) {
+          return false;
+        }
         return (
           !walletMode
-          || (!skipImport && pane.modes.includes(walletMode))
+          || (walletTemp && pane.modes.includes('temp'))
+          || (!skipImport && !walletTemp && pane.modes.includes(walletMode))
           || (skipImport && pane.modes.includes('skip'))
         );
       })
@@ -173,20 +224,17 @@ class ToolsContainer extends Component<Props> {
           menuItem: t(`tools_menu_${pane.name}`),
           render: () => (
             <Tab.Pane>
-              {React.createElement(pane.element, { ...this.props })}
+              {React.createElement(pane.element, {
+                blockExplorers: allBlockExplorers[connection.chainKey],
+                ...this.props
+              })}
             </Tab.Pane>
           )
         };
       });
   }
   render() {
-    const {
-      settings,
-      t
-    } = this.props;
-
     const panes = this.getPanes();
-
     return (
       <Tab
         menu={{
@@ -207,16 +255,19 @@ function mapStateToProps(state) {
     accounts: state.accounts,
     app: state.app,
     balances: state.balances,
-    blockExplorers: state.blockexplorers,
+    allBlockExplorers: state.blockexplorers,
     chain: state.chain,
+    connection: state.connection,
     contracts: state.contracts,
     customtokens: state.customtokens,
-    tables: state.tables,
     globals: state.globals,
     keys: state.keys,
+    ledger: state.ledger,
     proposals: state.proposals,
     settings: state.settings,
+    status: HardwareLedgerActions.ledgerGetStatus(state.ledger),
     system: state.system,
+    tables: state.tables,
     transaction: state.transaction,
     validate: state.validate,
     wallet: state.wallet,
@@ -228,20 +279,24 @@ function mapDispatchToProps(dispatch) {
   return {
     actions: bindActionCreators({
       ...AccountsActions,
+      ...BidNameActions,
       ...ContractsActions,
       ...CreateAccountActions,
       ...CustomTokensActions,
       ...GlobalsActions,
+      ...HardwareLedgerActions,
+      ...NameBidsActions,
       ...ProposalsActions,
       ...RegProxyActions,
+      ...RegproxyinfoActions,
       ...SettingsActions,
       ...StakeActions,
       ...SystemStateActions,
-      ...RegproxyinfoActions,
       ...TableActions,
+      ...ToolsHardwareLedger,
       ...TransactionActions,
-      ...UpdateAuthActions,
       ...UnregProxyActions,
+      ...UpdateAuthActions,
       ...WalletActions,
       ...WalletsActions,
     }, dispatch)

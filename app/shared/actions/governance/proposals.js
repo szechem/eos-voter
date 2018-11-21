@@ -40,6 +40,8 @@ export function getProposals(scope = 'eosforumdapp', previous = false) {
       const data = rows
         .map((proposal) => {
           const {
+            created_at,
+            expires_at,
             proposal_json,
             proposal_name,
             title
@@ -52,6 +54,8 @@ export function getProposals(scope = 'eosforumdapp', previous = false) {
             valid = false;
           }
           return {
+            created_at,
+            expires_at,
             json,
             proposal_json,
             proposal_name,
@@ -153,6 +157,7 @@ export function unvoteProposal(scope, voter, proposal_name) {
     });
     const { connection, settings } = getState();
     const { account } = settings;
+    const [, authorization] = connection.authorization.split('@');
     return eos(connection, true).transaction({
       actions: [
         {
@@ -160,7 +165,7 @@ export function unvoteProposal(scope, voter, proposal_name) {
           name: 'unvote',
           authorization: [{
             actor: account,
-            permission: 'active'
+            permission: authorization
           }],
           data: {
             voter,
@@ -194,6 +199,7 @@ export function voteProposal(scope, voter, proposal_name, vote, vote_json) {
     });
     const { connection, settings } = getState();
     const { account } = settings;
+    const [, authorization] = connection.authorization.split('@');
     return eos(connection, true).transaction({
       actions: [
         {
@@ -201,7 +207,7 @@ export function voteProposal(scope, voter, proposal_name, vote, vote_json) {
           name: 'vote',
           authorization: [{
             actor: account,
-            permission: 'active'
+            permission: authorization
           }],
           data: {
             voter,
@@ -219,6 +225,17 @@ export function voteProposal(scope, voter, proposal_name, vote, vote_json) {
       setTimeout(() => {
         dispatch(getVoteInfo(scope, account));
       }, 500);
+      // If this is an offline transaction, also store the ABI
+      if (!connection.sign) {
+        return eos(connection).getAbi(defaultContract).then((contract) =>
+          dispatch({
+            payload: {
+              contract,
+              tx
+            },
+            type: types.SYSTEM_GOVERNANCE_VOTE_PROPOSAL_SUCCESS
+          }));
+      }
       return dispatch({
         payload: { tx },
         type: types.SYSTEM_GOVERNANCE_VOTE_PROPOSAL_SUCCESS

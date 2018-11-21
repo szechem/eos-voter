@@ -18,6 +18,7 @@ class WalletPanelFormRamBuyConfirming extends Component<Props> {
   render() {
     const {
       buying,
+      connection,
       ramAmount,
       onBack,
       priceOfRam,
@@ -50,7 +51,7 @@ class WalletPanelFormRamBuyConfirming extends Component<Props> {
             </font>
 
 
-            {` ${t('ram_confirming_message_in_ram_for')} ~${priceOfRam.toFixed(4)} EOS.`}
+            {` ${t('ram_confirming_message_in_ram_for')} ~${priceOfRam.toFixed(4)} ${connection.chainSymbol || 'EOS'}.`}
           </Header>
           <Header>
             {t('ram_confirming_message_will_have')}
@@ -62,7 +63,7 @@ class WalletPanelFormRamBuyConfirming extends Component<Props> {
         </Segment>
 
         <Message warning>
-          {t('ram_confirming_message_price_includes_fee')}
+          {t('ram_confirming_message_price_includes_chain_fee', { chainSymbol: connection.chainSymbol })}
         </Message>
 
         <Divider />
@@ -74,6 +75,7 @@ class WalletPanelFormRamBuyConfirming extends Component<Props> {
               data={{
                 buyer: settings.account,
                 bytes: `${ramAmount} B`,
+                chainSymbol: connection.chainSymbol
               }}
             />
           ) : ''}

@@ -50,6 +50,32 @@ export function claimUnstaked(owner) {
   };
 }
 
+export function getContractHash(accountName) {
+  return (dispatch: () => void, getState) => {
+    dispatch({
+      type: types.SYSTEM_ACCOUNT_HAS_CONTRACT_PENDING,
+      payload: { account_name: accountName }
+    });
+    const {
+      connection,
+      settings
+    } = getState();
+
+    if (accountName && (settings.node || settings.node.length !== 0)) {
+      eos(connection).getCodeHash(accountName).then((response) => dispatch({
+        type: types.SYSTEM_ACCOUNT_HAS_CONTRACT_SUCCESS,
+        payload: {
+          account_name: accountName,
+          contract_hash: response.code_hash
+        }
+      })).catch((err) => dispatch({
+        type: types.SYSTEM_ACCOUNT_HAS_CONTRACT_FAILURE,
+        payload: { err },
+      }));
+    }
+  };
+}
+
 export function checkAccountAvailability(account = '') {
   return (dispatch: () => void, getState) => {
     dispatch({
@@ -130,8 +156,8 @@ export function getAccount(account = '') {
         const modified = Object.assign({}, results);
         if (!modified.self_delegated_bandwidth) {
           modified.self_delegated_bandwidth = {
-            cpu_weight: '0.0000 BEOS',
-            net_weight: '0.0000 BEOS'
+            cpu_weight: `0.0000 ${connection.chainSymbol || 'BEOS'}`,
+            net_weight: `0.0000 ${connection.chainSymbol || 'BEOS'}`
           };
         }
         // If a proxy voter is set, cache it's data for vote referencing
@@ -312,10 +338,13 @@ export function getAccountByKey(key) {
       settings
     } = getState();
     if (key && (settings.node || settings.node.length !== 0)) {
-      return eos(connection).getKeyAccounts(key).then((accounts) => dispatch({
-        type: types.SYSTEM_ACCOUNT_BY_KEY_SUCCESS,
-        payload: { accounts }
-      })).catch((err) => dispatch({
+      return eos(connection).getKeyAccounts(key).then((accounts) => {
+        dispatch(getAccounts(accounts.account_names));
+        return dispatch({
+          type: types.SYSTEM_ACCOUNT_BY_KEY_SUCCESS,
+          payload: { accounts }
+        })
+      }).catch((err) => dispatch({
         type: types.SYSTEM_ACCOUNT_BY_KEY_FAILURE,
         payload: { err, key }
       }));

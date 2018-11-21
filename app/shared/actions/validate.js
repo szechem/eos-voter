@@ -132,7 +132,7 @@ export function validateKey(key) {
       const permissions = ['active', 'owner'];
       try {
         // Derive the public key from the private key provided
-        const expect = ecc.privateToPublic(key);
+        const expect = ecc.privateToPublic(key, connection.keyPrefix);
         // Filter the account's permissions to find any valid matches
         const validPermissions = account.permissions.filter((perm) => {
           // Get the threshold a key needs to perform operations
@@ -150,7 +150,7 @@ export function validateKey(key) {
         // If the key matches any valid permission it's good
         if (validPermissions.length > 0) {
           dispatch({ type: types.VALIDATE_KEY_SUCCESS });
-          return true;
+          return validPermissions[0].perm_name;
         }
       } catch (err) {
         // key is likely invalid, an exception was thrown

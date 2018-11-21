@@ -2,8 +2,9 @@
 import React, { Component } from 'react';
 import { translate } from 'react-i18next';
 
-import { Dropdown, Container, Header, Message, Segment } from 'semantic-ui-react';
+import { Dropdown, Container, Header, List, Message, Segment } from 'semantic-ui-react';
 
+import GlobalModalDangerLink from '../../Global/Modal/DangerLink';
 import ToolsGovernanceProposalsProposal from './Proposals/Proposal';
 
 class ToolsGovernanceProposals extends Component<Props> {
@@ -30,6 +31,7 @@ class ToolsGovernanceProposals extends Component<Props> {
     const {
       actions,
       blockExplorers,
+      keys,
       proposals,
       settings,
       system,
@@ -42,6 +44,7 @@ class ToolsGovernanceProposals extends Component<Props> {
       list,
       votes
     } = proposals;
+    const isLocked = (settings.walletMode !== 'watch' && !keys.key);
     let recentOptions = [];
     if (settings && settings.recentProposalsScopes) {
       recentOptions = settings.recentProposalsScopes.map((recentProposalsScope) => ({
@@ -52,7 +55,7 @@ class ToolsGovernanceProposals extends Component<Props> {
     return (
       <Segment basic>
         <Header>
-          Referendum::Proposals (TEST)
+          Referendum::Proposals (BETA)
           <Header.Subheader>
             This feature is a preview release of the upcoming Referendum system being implemented into the BEOS ecosystem.
           </Header.Subheader>
@@ -64,13 +67,29 @@ class ToolsGovernanceProposals extends Component<Props> {
                 The Referendum system is a smart contract that allows BEOS stakeholders to directly be involved in the governance of the BEOS blockchain. When a proposal is entered into the referendum contract, there will be a period of time where all accounts staking BEOS will be allowed to vote in yes/no on the matters presented in a stake weighted system.
               </p>
               <p>
-                External links to learn more about this system will be integrated as the system evolves and as more official releases are made available.
+                Use the external links provided with each proposal to view the status and full details of each proposal. Proposals can also be browsed using the following sites:
               </p>
+              <List divided>
+                <List.Item>
+                  <GlobalModalDangerLink
+                    content={`https://eosvotes.io`}
+                    link={`https://eosvotes.io`}
+                    settings={settings}
+                  />
+                </List.Item>
+                <List.Item>
+                  <GlobalModalDangerLink
+                    content={`https://bloks.io/vote/referendums`}
+                    link={`https://bloks.io/vote/referendums`}
+                    settings={settings}
+                  />
+                </List.Item>
+              </List>
             </React.Fragment>
           )}
           info
         />
-        <Container>
+        <Container style={{ display: 'none' }}>
           {(list && list.length)
             ? (
               <Message>
@@ -107,6 +126,8 @@ class ToolsGovernanceProposals extends Component<Props> {
             <ToolsGovernanceProposalsProposal
               actions={actions}
               blockExplorers={blockExplorers}
+              isLocked={isLocked}
+              key={proposal.proposal_name}
               proposal={proposal}
               scope={scope}
               settings={settings}

@@ -30,6 +30,14 @@ class ToolsDelegations extends Component<Props> {
     this.interval = setInterval(this.tick.bind(this), 30000);
   }
 
+  componentDidUpdate(prevProps) {
+    const { settings } = this.props;
+
+    if (settings.account !== prevProps.settings.account) {
+      this.tick();
+    }
+  }
+
   componentWillUnmount() {
     clearInterval(this.interval);
   }
@@ -58,12 +66,13 @@ class ToolsDelegations extends Component<Props> {
       accounts,
       actions,
       balances,
-      blockExplorers,
-      tables,
+      allBlockExplorers,
+      connection,
       keys,
       settings,
       system,
       t,
+      tables,
       validate,
       wallet
     } = this.props;
@@ -88,7 +97,8 @@ class ToolsDelegations extends Component<Props> {
           account={accounts[settings.account]}
           actions={actions}
           balance={balances[settings.account]}
-          blockExplorers={blockExplorers}
+          blockExplorers={allBlockExplorers[connection.chainKey]}
+          connection={connection}
           delegationToEdit={delegationToEdit}
           delegationToRemove={delegationToRemove}
           keys={keys}
@@ -142,7 +152,7 @@ class ToolsDelegations extends Component<Props> {
               </Table.Header>
               <Table.Body>
                 {delegationsToDisplay.map((delegation) => (
-                  <Table.Row>
+                  <Table.Row key={delegation.to}>
                     <Table.Cell>
                       {delegation.to}
                     </Table.Cell>

@@ -10,12 +10,14 @@ export function voteproducers(producers = [], proxy = '') {
       settings
     } = getState();
     dispatch({
-      type: types.SYSTEM_VOTEPRODUCER_PENDING
+      type: types.SYSTEM_VOTEPRODUCER_PENDING,
+      payload: { connection }
     });
     const { account } = settings;
     // sort (required by EOS)
     producers.sort();
-    return eos(connection, true).voteproducer(account, proxy, producers)
+    return eos(connection, true)
+      .voteproducer(account, proxy, producers)
       .then((tx) => {
         const accounts = [account];
         // If a proxy is set, that account also needs to be loaded
@@ -24,15 +26,25 @@ export function voteproducers(producers = [], proxy = '') {
         }
         // Add a short delay for data processing on the node
         setTimeout(() => {
-          dispatch(getAccounts([account, proxy]));
+          dispatch(getAccounts(accounts));
         }, 500);
         return dispatch({
-          payload: { tx, producers, proxy },
+          payload: {
+            connection,
+            producers,
+            proxy,
+            tx,
+          },
           type: types.SYSTEM_VOTEPRODUCER_SUCCESS
         });
       })
       .catch((err) => dispatch({
-        payload: { err, producers, proxy },
+        payload: {
+          connection,
+          err,
+          producers,
+          proxy
+        },
         type: types.SYSTEM_VOTEPRODUCER_FAILURE
       }));
   };

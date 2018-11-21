@@ -22,7 +22,8 @@ class ToolsProxy extends Component<Props> {
     const {
       accounts,
       actions,
-      blockExplorers,
+      allBlockExplorers,
+      connection,
       contracts,
       keys,
       settings,
@@ -41,7 +42,7 @@ class ToolsProxy extends Component<Props> {
 
     const transaction = system && system.SET_REGPROXYINFO_LAST_TRANSACTION;
 
-    return ((keys && keys.key) || settings.walletMode === 'watch')
+    return ((keys && keys.key) || ['watch', 'ledger'].includes(settings.walletMode))
       ? (
         <React.Fragment>
           <Header>
@@ -55,7 +56,7 @@ class ToolsProxy extends Component<Props> {
             <ToolsButtonRegisterProxy
               account={account}
               actions={actions}
-              blockExplorers={blockExplorers}
+              blockExplorers={allBlockExplorers[connection.chainKey]}
               settings={settings}
               system={system}
             />
@@ -72,35 +73,36 @@ class ToolsProxy extends Component<Props> {
             <ToolsButtonUnregisterProxy
               account={account}
               actions={actions}
-              blockExplorers={blockExplorers}
+              blockExplorers={allBlockExplorers[connection.chainKey]}
               settings={settings}
               system={system}
             />
 
-            <GlobalTransactionHandler
-              actionName="SET_REGPROXYINFO"
-              actions={actions}
-              blockExplorers={blockExplorers}
-              content={(
-                <ToolsFormProxyInfo
-                  account={account}
-                  actions={actions}
-                  blockExplorers={blockExplorers}
-                  contracts={contracts}
-                  isProxy={isProxy}
-                  settings={settings}
-                  system={system}
-                  tables={tables}
-                  transaction={transaction}
-                />
-              )}
-              hideClose
-              onClose={this.onClose}
-              settings={settings}
-              system={system}
-              transaction={transaction}
-            />
-
+            {(connection.supportedContracts.includes('regproxyinfo')) && (
+              <GlobalTransactionHandler
+                actionName="SET_REGPROXYINFO"
+                actions={actions}
+                blockExplorers={allBlockExplorers[connection.chainKey]}
+                content={(
+                  <ToolsFormProxyInfo
+                    account={account}
+                    actions={actions}
+                    blockExplorers={allBlockExplorers[connection.chainKey]}
+                    contracts={contracts}
+                    isProxy={isProxy}
+                    settings={settings}
+                    system={system}
+                    tables={tables}
+                    transaction={transaction}
+                  />
+                )}
+                hideClose
+                onClose={this.onClose}
+                settings={settings}
+                system={system}
+                transaction={transaction}
+              />
+            )}
           </Segment>
         </React.Fragment>
       )

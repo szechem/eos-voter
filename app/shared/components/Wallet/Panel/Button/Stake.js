@@ -28,6 +28,7 @@ class WalletPanelButtonStake extends Component<Props> {
       accounts,
       balances,
       blockExplorers,
+      connection,
       settings,
       validate,
       system,
@@ -35,6 +36,9 @@ class WalletPanelButtonStake extends Component<Props> {
     } = this.props;
 
     const account = accounts[settings.account];
+    if(!account) {
+      return (null);
+    }
 
     const {
       cpu_weight,
@@ -48,7 +52,7 @@ class WalletPanelButtonStake extends Component<Props> {
         blockExplorers={blockExplorers}
         button={{
           color: 'blue',
-          content: t('stake_button_cta'),
+          content: t('stake_button_text', { chainSymbol: connection.chainSymbol }),
           fluid: true,
           icon: 'microchip'
         }}
@@ -58,9 +62,10 @@ class WalletPanelButtonStake extends Component<Props> {
             accountName={settings.account}
             actions={actions}
             balance={balances[settings.account]}
-            cpuAmount={Decimal(cpu_weight.split(' ')[0])}
+            connection={connection}
+            cpuAmount={Decimal(String(cpu_weight).split(' ')[0])}
             key="StakeForm"
-            netAmount={Decimal(net_weight.split(' ')[0])}
+            netAmount={Decimal(String(net_weight).split(' ')[0])}
             onClose={this.onClose}
             settings={settings}
             system={system}

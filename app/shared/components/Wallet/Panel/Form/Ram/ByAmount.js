@@ -34,17 +34,19 @@ class WalletPanelFormRamByAmount extends Component<Props> {
       onChange
     } = this.props;
 
-    const decBaseBal = Decimal(globals.ram.base_balance);
-    const decQuoteBal = Decimal(globals.ram.quote_balance);
-    const decValueInBytes = Decimal(parseFloat(value));
+    let priceOfRam;
 
-    let priceOfRam = 0;
+    if (globals.ram) {
+      const decBaseBal = Decimal(globals.ram.base_balance);
+      const decQuoteBal = Decimal(globals.ram.quote_balance);
+      const decValueInBytes = Decimal(parseFloat(value));
 
-    if (decValueInBytes.greaterThan(0)) {
-      priceOfRam = calculatePriceOfRam(decBaseBal, decQuoteBal, decValueInBytes);
+      if (decValueInBytes.greaterThan(0)) {
+        priceOfRam = calculatePriceOfRam(decBaseBal, decQuoteBal, decValueInBytes);
+      }
+
+      onChange(value, priceOfRam || 0);
     }
-
-    onChange(value, priceOfRam);
 
     this.setState({
       amountOfRam: value,
@@ -54,6 +56,7 @@ class WalletPanelFormRamByAmount extends Component<Props> {
 
   render() {
     const {
+      connection,
       formError,
       t
     } = this.props;
@@ -76,7 +79,7 @@ class WalletPanelFormRamByAmount extends Component<Props> {
         />
         {(priceOfRam && !formError) ? (
           <h4 style={{ textAlign: 'center', margin: '30px' }}>
-            {`${t('ram_form_text_estimate')} ${priceOfRam.toFixed(4)} EOS.`}
+            {`${t('ram_form_text_estimate')} ${priceOfRam.toFixed(4)} ${connection.chainSymbol || 'EOS'}.`}
           </h4>
         ) : ''}
       </div>
