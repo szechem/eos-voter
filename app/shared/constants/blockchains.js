@@ -1,7 +1,7 @@
 const blockchains = [
   {
-    chainId: 'aca376f206b8fc25a6ed44dbdc66547c36c6c33e3a119ffbeaef943642f0e906',
-    defaultNode: 'https://eos.greymass.com',
+    chainId: '50f1cee2e3750f473e673049c1b828ec10e10eb96c7211a91cc2bd29ae94c6dd',
+    defaultNode: 'http://192.168.4.208:8888',
     key: 'eos-mainnet',
     name: 'EOS Mainnet',
     symbol: 'EOS',

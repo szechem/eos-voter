@@ -40,7 +40,7 @@ export default class GlobalFormFieldMultiToken extends Component<Props> {
     const { customTokens } = settings;
     // Determine which tokens are being tracked
 
-    const trackedTokens = (connection.supportedContracts.includes('customtokens') && customTokens) ?
+    const trackedTokens = (customTokens) ?
       (
         customTokens.map((tokenName) => {
           const [contract, symbol] = tokenName.split(':');
@@ -48,7 +48,7 @@ export default class GlobalFormFieldMultiToken extends Component<Props> {
         })
       ) : [{
         contract: 'eosio',
-        symbol: connection.chainSymbol || 'PXBTS'
+        symbol: 'PXBTS'
       }];
 
     const options = [];

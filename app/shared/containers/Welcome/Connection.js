@@ -32,7 +32,7 @@ class WelcomeConnectionContainer extends Component<Props> {
   constructor(props) {
     super(props);
     this.state = {
-      node: props.settings.node || 'https://eos.greymass.com',
+      node: props.settings.node || 'http://192.168.4.208:8888',
       sslConfirm: false
     };
   }
