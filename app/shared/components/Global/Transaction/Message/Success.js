@@ -47,30 +47,6 @@ class GlobalTransactionMessageSuccess extends Component<Props> {
         />
         <Modal.Content>
           <p>{t('global_transaction_complete_message')}</p>
-          <Segment padded textAlign="center">
-            <p>txids</p>
-            {links.map((link, idx) => (
-              <p key={idx}>
-                #{idx+1}
-                {' - '}
-                {link}
-              </p>
-            ))}
-            <p>({`${t('global_transaction_complete_link_to')} ${settings.blockExplorer}`})</p>
-          </Segment>
-          <Message
-            icon
-            size="large"
-            warning
-          >
-            <Icon
-              name="info circle"
-            />
-            <Message.Content>
-              <Message.Header>{t('global_transaction_complete_warning_title')}</Message.Header>
-              {t('global_transaction_complete_warning_message')}
-            </Message.Content>
-          </Message>
         </Modal.Content>
         <Modal.Actions>
           {(!hideClose)

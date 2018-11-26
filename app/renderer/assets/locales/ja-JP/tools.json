@@ -182,7 +182,7 @@
   "tools_permissions_info_content": "アクセス権ツールは新しい公開鍵を指定し、アカウントの制御権限を設定することができます。アカウントのキーを変更する場合は、関連付けられた秘密鍵を安全な場所にバックアップしていることを確認して下さい。アカウントの公開鍵を秘密鍵が不明なキーペアに変更すると、アカウントは永久にアクセス不能になります。",
   "tools_permissions_info_header": "アカウントのアクセス権の変更",
   "tools_permissions_ledger_permissions_unavailable_header": "Unable to Modify Permissions",
-  "tools_permissions_ledger_permissions_unavailable_subheader": "Currently the EOS Application that runs on the Ledger is unable to update permissions.",
+  "tools_permissions_ledger_permissions_unavailable_subheader": "Currently the BEOS Application that runs on the Ledger is unable to update permissions.",
   "tools_permissions_subheader": "アカウントのアクセス権の作成と変更",
   "tools_permissions_warning_content": "このアクセス権の更新後、関連付けられている秘密鍵へアクセスできない場合、この権限 (と場合によってはアカウント) へのアクセスを失います。",
   "tools_permissions_warning_header": "キーの変更は危険を含む操作です",

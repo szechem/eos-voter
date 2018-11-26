@@ -74,7 +74,7 @@ class TabMenu extends Component<Props> {
                 <Label
                   size="medium"
                   color="grey"
-                  content={connection.chain || 'EOS Mainnet'}
+                  content={connection.chain || 'BEOS Mainnet'}
                 />
               </Menu.Item>
             ) : ''}

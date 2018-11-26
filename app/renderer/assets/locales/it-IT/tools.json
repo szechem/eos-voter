@@ -182,7 +182,7 @@
   "tools_permissions_info_content": "The permissions tool will allow you to specify new Public Keys and set them as the controlling authority of an account. When changing an accounts keys, ensure that you have the associated Private Key backed up someplace safe. Changing the Public Keys on an account to a keypair in which the Private Key is unknown will cause the account to become permanantly inaccessible.",
   "tools_permissions_info_header": "Altering Account Permissions",
   "tools_permissions_ledger_permissions_unavailable_header": "Unable to Modify Permissions",
-  "tools_permissions_ledger_permissions_unavailable_subheader": "Currently the EOS Application that runs on the Ledger is unable to update permissions.",
+  "tools_permissions_ledger_permissions_unavailable_subheader": "Currently the BEOS Application that runs on the Ledger is unable to update permissions.",
   "tools_permissions_subheader": "Create and modify an accounts permissions",
   "tools_permissions_warning_content": "After updating this permission, if you do not have access to the associated private key you will lose access to this authority (and potentially the account).",
   "tools_permissions_warning_header": "Changing keys is a potentially dangerous action",

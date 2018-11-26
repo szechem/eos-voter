@@ -37,7 +37,7 @@ class ToolsKeys extends Component<Props> {
         <Header>
           {t('tools_keys_key_generation_header')}
           <Header.Subheader>
-            {t('tools_keys_key_generation_subheader')}
+            {t('tools_keys_key_generation_subheader_message', { chainSymbol: 'BEOS' })}
           </Header.Subheader>
         </Header>
         <Message

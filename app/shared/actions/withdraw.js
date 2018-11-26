@@ -16,8 +16,7 @@ export function withdraw(owner, bitsharesAccount, quantity) {
         contract.withdraw(
           owner,
           bitsharesAccount,
-          quantity,
-          ''
+          quantity
         );
       }, {
         broadcast: connection.broadcast,

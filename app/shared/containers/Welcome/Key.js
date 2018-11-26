@@ -165,7 +165,7 @@ class WelcomeKeyContainer extends Component<Props> {
     let message = (
       <Message
         color="blue"
-        content={t('welcome_key_compare_content')}
+        content={t('welcome_key_compare_content_text')}
         icon="info circle"
         info
         header={t('welcome_key_compare_title')}
