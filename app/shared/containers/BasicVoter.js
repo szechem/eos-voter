@@ -13,8 +13,6 @@ import TabMenu from '../components/TabMenu';
 import Test from './Test';
 import Tools from './Tools';
 import Wallet from '../components/Wallet';
-import Notifications from '../components/Notifications';
-import ModalConstitution from '../components/Global/Modal/Constitution';
 
 import * as AccountsActions from '../actions/accounts';
 import * as AppActions from '../actions/app';
@@ -108,7 +106,6 @@ class BasicVoterContainer extends Component<Props> {
     } = this.props;
     const {
       getAccount,
-      getConstants,
       getGlobals,
       getInfo
     } = actions;
@@ -117,7 +114,6 @@ class BasicVoterContainer extends Component<Props> {
       if (settings.account) {
         getAccount(settings.account);
       }
-      getConstants();
       getGlobals();
       getInfo();
     }
@@ -131,7 +127,6 @@ class BasicVoterContainer extends Component<Props> {
     } = this.state;
     const {
       actions,
-      app,
       connection,
       keys,
       settings,
@@ -171,12 +166,6 @@ class BasicVoterContainer extends Component<Props> {
           locked={(!keys.key)}
           settings={settings}
           validate={validate}
-          wallet={wallet}
-        />
-        <Notifications
-          actions={actions}
-          app={app}
-          settings={settings}
           wallet={wallet}
         />
         <Segment
