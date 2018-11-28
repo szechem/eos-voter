@@ -84,11 +84,6 @@ const paneMapping = [
     requiredContract: 'customtokens'
   },
   {
-    element: ToolsWallets,
-    modes: ['cold', 'hot', 'watch'],
-    name: 'wallets',
-  },
-  {
     element: ToolsPermissions,
     modes: ['hot', 'ledger', 'watch', 'temp'],
     name: 'permissions',
