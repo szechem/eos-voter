@@ -9,7 +9,7 @@ const blockchains = [
   },
   {
     chainId: '50f1cee2e3750f473e673049c1b828ec10e10eb96c7211a91cc2bd29ae94c6dd',
-    defaultNode: 'http://192.168.4.208:8888',
+    defaultNode: 'http://api.beos.testnet:8888',
     key: 'eos-mainnet',
     name: 'BEOS Mainnet',
     symbol: 'BEOS',

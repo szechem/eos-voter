@@ -28,16 +28,16 @@ export default function connection(state = initialState, action) {
     }
     // Update httpEndpoint based on node validation/change
     case types.VALIDATE_NODE_SUCCESS: {
-      const blockchain = find(blockchains, { chainId: action.payload.info.chain_id });
+      // const blockchain = find(blockchains, { chainId: action.payload.info.chain_id });
 
       return Object.assign({}, state, {
-        chain: (blockchain && blockchain.name) || 'unknown',
+        chain: 'BEOS Mainnet',
         chainId: action.payload.info.chain_id,
-        chainKey: (blockchain && blockchain.key) || 'unknown',
-        chainSymbol: (blockchain && blockchain.symbol) || 'EOS',
+        chainKey: 'eos-mainnet',
+        chainSymbol: 'BEOS',
         httpEndpoint: action.payload.node,
         keyPrefix: 'EOS',
-        supportedContracts: blockchain.supportedContracts
+        supportedContracts: ['customtokens', 'producerinfo', 'proposals', 'regproxyinfo']
       });
     }
     // Remove key from connection if the wallet is locked/removed
