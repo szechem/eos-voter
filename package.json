@@ -1,7 +1,7 @@
 {
-  "name": "eos-voter",
-  "productName": "eos-voter",
-  "version": "0.6.2",
+  "name": "beos-voter",
+  "productName": "beos-voter",
+  "version": "0.6.6",
   "description": "Simple light wallet and block producer voting tool for the EOS blockchain",
   "scripts": {
     "build": "concurrently \"npm run build-main\" \"npm run build-renderer\"",
@@ -32,7 +32,7 @@
     "not ie <= 8"
   ],
   "build": {
-    "productName": "eos-voter",
+    "productName": "beos-voter",
     "appId": "com.greymass.eos-voter",
     "artifactName": "${os}-${productName}-${version}-${arch}.${ext}",
     "asar": true,
@@ -86,16 +86,16 @@
       "oneClick": false,
       "createDesktopShortcut": "always",
       "createStartMenuShortcut": true,
-      "shortcutName": "eos-voter"
+      "shortcutName": "beos-voter"
     },
     "linux": {
       "category": "Network",
-      "description": "Simple light wallet and block producer voting tool for the EOS blockchain",
+      "description": "Simple light wallet and block producer voting tool for the BEOS blockchain",
       "desktop": {
-        "Name": "eos-voter",
-        "GenericName": "EOS Voting Client + Wallet",
-        "X-GNOME-FullName": "eos-voter",
-        "Comment": "Simple light wallet and block producer voting tool for the EOS blockchain",
+        "Name": "beos-voter",
+        "GenericName": "BEOS Voting Client + Wallet",
+        "X-GNOME-FullName": "beos-voter",
+        "Comment": "Simple light wallet and block producer voting tool for the BEOS blockchain",
         "Type": "Application",
         "Terminal": "false",
         "StartupNotify": "false",
@@ -115,7 +115,7 @@
       ]
     },
     "snap": {
-      "synopsis": "Simple light wallet and block producer voting tool for the EOS blockchain",
+      "synopsis": "Simple light wallet and block producer voting tool for the BEOS blockchain",
       "confinement": "devmode",
       "grade": "devel",
       "buildPackages": [
