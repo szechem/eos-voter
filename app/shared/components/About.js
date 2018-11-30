@@ -34,6 +34,13 @@ export default class About extends Component<Props> {
                     </Header>
                     <p>
                       {t('about_opensource_message')}
+                      {' '}
+                      <a
+                        onClick={() => this.openLink(t('about_opensource_link'))}
+                        role="button"
+                      >
+                        {t('about_opensource_link')}
+                      </a>.
                     </p>
                   </Segment>
                   <Segment secondary>
@@ -49,6 +56,16 @@ export default class About extends Component<Props> {
                     <Image src={logo} alt="Greymass" />
                     <Segment basic padded>
                       <p>{t('about_greymass_message_1')}</p>
+                      <p>
+                        {t('about_greymass_message_2')}
+                        {' '}
+                        <a
+                          onClick={() => this.openLink('https://greymass.com')}
+                          role="button"
+                        >
+                          https://greymass.com
+                        </a>.
+                      </p>
                     </Segment>
                   </Segment>
                 </Grid.Column>

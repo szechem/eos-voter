@@ -97,9 +97,7 @@ export default class MenuBuilder {
       submenu: [
         { label: 'Source Code (Github)', click() { shell.openExternal('https://github.com/greymass/eos-voter'); } },
         { label: 'Report Bug (Github)', click() { shell.openExternal('https://github.com/greymass/eos-voter/issues'); } },
-        { label: 'Releases (Github)', click() { shell.openExternal('https://github.com/greymass/eos-voter/releases'); } },
-        { type: 'separator' },
-        { label: 'Check for Updates', click: (menuItem, browserWindow) => { checkForUpdates(menuItem, browserWindow); } }
+        { label: 'Releases (Github)', click() { shell.openExternal('https://github.com/greymass/eos-voter/releases'); } }
       ]
     };
 
@@ -169,9 +167,7 @@ export default class MenuBuilder {
       submenu: [
         { label: 'Source Code (Github)', click() { shell.openExternal('https://github.com/greymass/eos-voter'); } },
         { label: 'Report Bug (Github)', click() { shell.openExternal('https://github.com/greymass/eos-voter/issues'); } },
-        { label: 'Releases (Github)', click() { shell.openExternal('https://github.com/greymass/eos-voter/releases'); } },
-        { type: 'separator' },
-        { label: 'Check Updates...', click: (menuItem, browserWindow) => { checkForUpdates(menuItem, browserWindow); } }
+        { label: 'Releases (Github)', click() { shell.openExternal('https://github.com/greymass/eos-voter/releases'); } }
       ]
     }];
 
