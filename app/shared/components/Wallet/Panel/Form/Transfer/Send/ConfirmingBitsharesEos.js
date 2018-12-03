@@ -21,6 +21,7 @@ class WalletPanelFormWithdrawConfirmingBitsharesEos extends Component<Props> {
       onBack,
       quantity,
       asset,
+      memo,
       to,
       t,
       waiting,
@@ -56,6 +57,10 @@ class WalletPanelFormWithdrawConfirmingBitsharesEos extends Component<Props> {
                 {' '}
                 ({contract})
               </Table.Cell>
+            </Table.Row>
+            <Table.Row>
+              <Table.Cell>{t('transfer_label_memo')}</Table.Cell>
+              <Table.Cell>{memo}</Table.Cell>
             </Table.Row>
           </Table.Body>
         </Table>

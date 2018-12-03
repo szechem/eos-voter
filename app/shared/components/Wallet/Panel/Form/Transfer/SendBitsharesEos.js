@@ -5,6 +5,7 @@ import { translate } from 'react-i18next';
 
 import FormFieldMultiToken from '../../../../Global/Form/Field/MultiToken';
 import GlobalFormFieldAccount from '../../../../Global/Form/Field/Account';
+import GlobalFormFieldMemo from '../../../../Global/Form/Field/Memo';
 import WalletPanelFormTransferSendConfirmingBitsharesEos from './Send/ConfirmingBitsharesEos';
 
 class WalletPanelFormTransferSendBitsharesEos extends Component<Props> {
@@ -14,6 +15,7 @@ class WalletPanelFormTransferSendBitsharesEos extends Component<Props> {
       asset: 'PXBTS',
       confirming: false,
       from: props.settings.account,
+      memo: '',
       quantity: '',
       quantityDisabled: true,
       showAccountValidationError: false,
@@ -27,12 +29,13 @@ class WalletPanelFormTransferSendBitsharesEos extends Component<Props> {
   onConfirm = () => {
     const {
       from,
+      memo,
       quantity,
       asset,
       to
     } = this.state;
     this.setState({ confirming: false }, () => {
-      this.props.actions.transfer(from, to, quantity, 'memo', asset);
+      this.props.actions.transfer(from, to, quantity, memo, asset);
     });
   }
 
@@ -104,6 +107,7 @@ class WalletPanelFormTransferSendBitsharesEos extends Component<Props> {
       from,
       quantity,
       quantityDisabled,
+      memo,
       showAccountValidationError,
       to,
       waiting,
@@ -147,6 +151,7 @@ class WalletPanelFormTransferSendBitsharesEos extends Component<Props> {
               onBack={this.onBack}
               onConfirm={this.onConfirm}
               quantity={quantity}
+              memo={memo}
               to={to}
               waiting={waiting}
               waitingStarted={waitingStarted}
@@ -176,6 +181,14 @@ class WalletPanelFormTransferSendBitsharesEos extends Component<Props> {
               <p>
                 {`${balance[asset].toFixed(4)} ${asset} ${t('transfer_header_available')}`}
               </p>
+              <GlobalFormFieldMemo
+                icon="x"
+                label={t('transfer_label_memo')}
+                loading={false}
+                name="memo"
+                onChange={this.onChange}
+                value={memo}
+              />
 
               <Divider />
               <Button
