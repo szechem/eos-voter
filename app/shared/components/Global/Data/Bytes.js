@@ -1,6 +1,7 @@
 // @flow
 import React, { Component } from 'react';
 import { Popup } from 'semantic-ui-react';
+import Decimal from 'decimal.js';
 
 const prettyBytes = require('pretty-bytes');
 
@@ -10,13 +11,15 @@ export default class GlobalDataBytes extends Component<Props> {
       bytes
     } = this.props;
 
+    const safeBytes = new Decimal(bytes).toNumber();
+
     return (
       <Popup
-        content={`${bytes} B`}
+        content={`${safeBytes} B`}
         inverted
         trigger={
           <span>
-            {` ${prettyBytes(bytes)} `}
+            {` ${prettyBytes(safeBytes)} `}
           </span>
         }
       />
