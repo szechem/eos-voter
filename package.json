@@ -1,7 +1,7 @@
 {
   "name": "beos-voter",
   "productName": "beos-voter",
-  "version": "0.6.8",
+  "version": "0.6.9",
   "description": "Simple light wallet and block producer voting tool for the EOS blockchain",
   "scripts": {
     "build": "concurrently \"npm run build-main\" \"npm run build-renderer\"",
@@ -33,7 +33,7 @@
   ],
   "build": {
     "productName": "beos-voter",
-    "appId": "com.greymass.eos-voter",
+    "appId": "com.greymass.beos-voter",
     "artifactName": "${os}-${productName}-${version}-${arch}.${ext}",
     "asar": true,
     "files": [
